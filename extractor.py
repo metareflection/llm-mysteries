@@ -8,4 +8,5 @@ model = models.transformers(base_model_name)
 def extract(r, choices):
     i = r.index(postambule)
     prompt = r[i+len(postambule):]
+    prompt += "\nThe culprit is"
     return generate.choice(model, choices)(prompt)

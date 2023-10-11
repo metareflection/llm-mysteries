@@ -23,4 +23,9 @@ def gen(prompt, choices):
     choices_repr = [repr(c) for c in choices]
     choices_repr_joined = ', '.join(choices_repr)
     print(f'gen({repr(prompt)}, [{choices_repr_joined}])')
+    rng = torch.Generator(device="cuda")
+    rng.manual_seed(789001)
+    return gen_fresh(prompt, choices, rng=rng)
+
+def gen_fresh(prompt, choices, rng=rng):
     return generate.choice(model, choices)(prompt, rng=rng)

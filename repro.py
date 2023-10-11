@@ -1,7 +1,4 @@
-from extractor import model, generate
-
-def gen(prompt, choices):
-    return generate.choice(model, choices)(prompt)
+from extractor import gen
 
 extra_prompt = "\nThe culprit is"
 

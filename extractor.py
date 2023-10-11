@@ -20,4 +20,7 @@ def extract(r, choices):
     return gen(prompt, choices)
 
 def gen(prompt, choices):
+    choices_repr = [repr(c) for c in choices]
+    choices_repr_joined = ', '.join(choices_repr)
+    print(f'gen({repr(prompt)}, [{choices_repr_joined}])')
     return generate.choice(model, choices)(prompt, rng=rng)

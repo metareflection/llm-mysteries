@@ -16,8 +16,8 @@ def generateCase(generate, extract, x):
     print(f"## {x['comment']}")
     r = generate(f"{preambule}\n{x['input']}\n{postambule}")
     s = extract(r, suspects(x))
-    print(f"The culprit was {s}.")
-    print(f"\nIn fact, it was {culprit(x)}.")
+    print(f"The culprit is {s}.")
+    print(f"\nIn fact, it is {culprit(x)}.")
     x['eval'] = s == culprit(x)
     return x
     

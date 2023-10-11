@@ -16,7 +16,7 @@ def extract(r, choices):
     prompt = r[i+len(postambule):]
     print(prompt)
     print("The suspects are "+",".join(choices))
-    prompt += "\nThe culprit is"
+    prompt += "\nSo as explained, the culprit is"
     return gen(prompt, choices)
 
 def gen(prompt, choices):

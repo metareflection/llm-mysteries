@@ -15,7 +15,7 @@ import yaml
 with open('config.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
-openai.organization = "org-f2tK1brD8eM1W91o2X5WgNoy"
+#openai.organization = "org-f2tK1brD8eM1W91o2X5WgNoy"
 openai.api_key = config['OPENAI_KEY']
 
 def default_model_if_none(model=None):
@@ -24,7 +24,7 @@ def default_model_if_none(model=None):
     return model
 
 @retry(wait=wait_random_exponential(min=10, max=30), stop=stop_after_attempt(25))
-def generate(messages, model=None): # "gpt-3.5-turbo", "gpt-4"
+def generate_call(messages, model=None): # "gpt-3.5-turbo", "gpt-4"
     model = default_model_if_none(model)
     print("calling GPT... model="+model)
     return openai.ChatCompletion.create(
@@ -33,8 +33,11 @@ def generate(messages, model=None): # "gpt-3.5-turbo", "gpt-4"
 
 @memory.cache
 def ask(message, model):
-    response = generate([{"role":"user", "content": message}], model=model)
+    response = generate_call([{"role":"user", "content": message}], model=model)
     return response.choices[0].message.content
+
+def generate(message):
+    return message+'\n'+ask(message, model="gpt-4")
 
 if __name__ == '__main__':
     model = default_model_if_none(None)

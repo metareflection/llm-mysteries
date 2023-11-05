@@ -2,6 +2,10 @@ import llm
 import extractor
 from load import dataset, suspects, culprit
 
+def generate_rest(msg):
+    res = llm.generate(msg)
+    return res[len(msg):]
+
 bool_choices = ["No", "Yes"]
 
 stats = {'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
@@ -11,8 +15,8 @@ def processCase(x):
     print(f"## {x['comment']}")
     ss = suspects(x)
     story = x['input']
-    incriminating_nodes = [llm.generate(f"Find incrinimating evidence (mean, motive, opportunity) for {s} in the following story. {story}") for s in ss]
-    exonerating_nodes = [llm.generate(f"Find exonerating evidence (mean, motive, opportunity) for {s} in the following story. {story}") for s in ss]
+    incriminating_nodes = [generate_rest(f"Find incrinimating evidence (mean, motive, opportunity) for {s} in the following story. {story}") for s in ss]
+    exonerating_nodes = [generate_rest(f"Find exonerating evidence (mean, motive, opportunity) for {s} in the following story. {story}") for s in ss]
     incriminating_summary = [extractor.gen(f"{n}\nBased on what precedes, is there incriminating evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(incriminating_nodes,ss)]
     exonerating_summary = [extractor.gen(f"{n}\nBased on what precedes, is there exonerating evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(exonerating_nodes,ss)]
     incriminating = [z=='Yes' for z in incriminating_summary]

@@ -23,24 +23,21 @@ def processCase(x):
     if n_culprits==0:
         print("Found no culprit.")
         stats['not_found'] += 1
-        return False
     elif n_culprits==1:
         index = culprits.index(True)
         found_culprit = ss[index]
         print("Found culprit {found_culprit}. Real culprit {x}.")
-        stats['found'] += 1
-        return found_culprit==real_culprit
+        stats['found' if found_culprit==real_culprit else 'not_found'] += 1
     else:
         print("Found {n_culprit} culprits.")
         index = ss.index(real_culprit)
         if culprits[index]:
             print("Including real culprit.")
             stats['within'] += 1
-            return True
         else:
             print("Excluding real culprit.")
             stats['not_within'] += 1
-            return False
+    return x
 
 if __name__ == '__main__':
     dataset.map(processCase)

@@ -2,7 +2,8 @@ import torch
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer, TextStreamer
 
 #base_model_name = "mistralai/Mistral-7B-v0.1"
-base_model_name = "meta-llama/Llama-2-70b-hf"
+#base_model_name = "meta-llama/Llama-2-70b-hf"
+base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
@@ -31,7 +32,7 @@ def generate(eval_prompt, max_new_tokens=200):
     r = None
     with torch.no_grad():
         r = tokenizer.decode(model.generate(**model_input,
-                                            #streamer=streamer,
+                                            streamer=streamer,
                                             max_new_tokens=max_new_tokens)[0],
                              skip_special_tokens=True)
     return r

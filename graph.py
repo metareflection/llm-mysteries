@@ -1,3 +1,4 @@
+
 import llm
 import extractor
 from load import dataset, suspects, culprit
@@ -12,7 +13,7 @@ stats = {'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
 
 def generate_node(s, qual, story, w=''):
     dir = f"{qual} evidence ({w}mean, {w}motive, {w}opportunity) for {s} in the story."
-    return generate_rest(f"Find {dir}.\n{story}\nSo find{dir}.")
+    return generate_rest(f"Find {dir}.\n{story}\nSo find {dir}.")
 
 def generate_nodes(ss, qual, story, w=''):
     return [generate_node(s, qual, story, w) for s in ss]

@@ -1,8 +1,8 @@
 from markers import preambule, postambule
 from datasets import load_dataset
 
-task_json = 'BIG-bench/bigbench/benchmark_tasks/minute_mysteries_qa/multiplechoice/task.json'
-#task_json = 'tiny.json'
+#task_json = 'BIG-bench/bigbench/benchmark_tasks/minute_mysteries_qa/multiplechoice/task.json'
+task_json = 'tiny.json'
 
 dataset = load_dataset('json', data_files=task_json, field='examples')
 

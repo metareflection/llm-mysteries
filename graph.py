@@ -78,6 +78,56 @@ def processCase2(x):
         stats2['not_found'] += 1
     return x
 
+def processCase3(x):
+    global stats
+    print(f"## {x['comment']}")
+    ss = suspects(x)
+    story = x['input']
+    incriminating_nodes = generate_nodes(ss, "incriminating", story)
+    exonerating_nodes = generate_nodes(ss, "exonerating", story, w='no ')
+    incriminating_summary = generate_summary(ss, "incriminating", incriminating_nodes)
+    exonerating_summary = generate_summary(ss, "exonerating", exonerating_nodes)
+    incriminating = [z=='Yes' for z in incriminating_summary]
+    exonerating = [z=='Yes' for z in exonerating_summary]
+    culprits = [y and (not n) for (y,n) in zip(incriminating, exonerating)]
+    n_culprits = culprits.count(True)
+    real_culprit = culprit(x)
+    if n_culprits==0:
+        print(f"Found no culprit. Real culprit {real_culprit}.")
+        stats['found_none'] += 1
+    elif n_culprits==1:
+        index = culprits.index(True)
+        found_culprit = ss[index]
+        print(f"Found culprit {found_culprit}. Real culprit {real_culprit}.")
+        stats['found' if found_culprit==real_culprit else 'not_found'] += 1
+    else:
+        print(f"Found {n_culprits} culprits out of {len(ss)} suspects.")
+        index = ss.index(real_culprit)
+        if culprits[index]:
+            print(f"Including real culprit {real_culprit}.")
+            stats['within'] += 1
+        else:
+            print(f"Excluding real culprit {real_culprit}.")
+            stats['not_within'] += 1
+
+    prompt = "Find the culprit based on the evidence.\n\n"
+    for (s,(y,n)) in zip(ss, zip(incriminating_nodes, exonerating_nodes)):
+        prompt += f"Incriminating evidence for {s}: {y}\n"
+        prompt += f"Exonerating evidence for {s}: {n}\n"
+        prompt += "\n"
+    prompt += "Who is the culprit?"
+    found_culprit2 = extractor.gen(prompt, ss)
+    if found_culprit2==real_culprit:
+        print(f"Method 2: Found real culprit {real_culprit}")
+        stats2['found'] += 1
+    else:
+        print(f"Method 2: Found wrong culprit {found_culprit2}, not real culprit {real_culprit}")
+        stats2['not_found'] += 1
+    return x
+
 if __name__ == '__main__':
-    dataset.map(processCase2)
+    dataset.map(processCase3)
+    print('Method 1 stats')
+    print(stats)
+    print('Method 2 stats')
     print(stats2)

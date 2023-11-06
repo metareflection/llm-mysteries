@@ -36,7 +36,7 @@ def processCase(x):
     n_culprits = culprits.count(True)
     real_culprit = culprit(x)
     if n_culprits==0:
-        print("Found no culprit. Real culprit {real_culprit}.")
+        print(f"Found no culprit. Real culprit {real_culprit}.")
         stats['found_none'] += 1
     elif n_culprits==1:
         index = culprits.index(True)

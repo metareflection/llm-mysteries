@@ -1,4 +1,3 @@
-
 import llm
 import extractor
 from load import dataset, suspects, culprit
@@ -54,6 +53,31 @@ def processCase(x):
             stats['not_within'] += 1
     return x
 
+stats2 = {'found': 0, 'not_found': 0}
+
+def processCase2(x):
+    global stats2
+    print(f"## {x['comment']}")
+    ss = suspects(x)
+    story = x['input']
+    incriminating_nodes = generate_nodes(ss, "incriminating", story)
+    exonerating_nodes = generate_nodes(ss, "exonerating", story, w='no ')
+    prompt = "Find the culprit based on the evidence.\n\n"
+    for (s,(y,n)) in zip(ss, zip(incriminating_nodes, exonerating_nodes)):
+        prompt += f"Incriminating evidence for {s}: {y}\n"
+        prompt += f"Exonerating evidence for {s}: {n}\n"
+        prompt += "\n"
+    prompt += "Who is the culprit?"
+    found_culprit = extractor.gen(prompt, ss)
+    real_culprit = culprit(x)
+    if found_culprit==real_culprit:
+        print(f"Found real culprit {real_culprit}")
+        stats2['found'] += 1
+    else:
+        print(f"Found wrong culprit {found_culprit}, not real culprit {real_culprit}")
+        stats2['not_found'] += 1
+    return x
+
 if __name__ == '__main__':
-    dataset.map(processCase)
-    print(stats)
+    dataset.map(processCase2)
+    print(stats2)

@@ -19,7 +19,7 @@ def generate_nodes(ss, qual, story, w=''):
     return [generate_node(s, qual, story, w) for s in ss]
 
 def generate_summary(ss, qual, nodes):
-    return [extractor.gen(f"Possible {qual} evidence: {n}\nBased on what precedes, is there {qual} evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(nodes,ss)]
+    return [extractor.gen(f"Possible {qual} evidence: {n}\nIs there {qual} strong evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(nodes,ss)]
 
 def processCase(x):
     global stats
@@ -36,7 +36,7 @@ def processCase(x):
     n_culprits = culprits.count(True)
     real_culprit = culprit(x)
     if n_culprits==0:
-        print("Found no culprit.")
+        print("Found no culprit. Real culprit {real_culprit}.")
         stats['found_none'] += 1
     elif n_culprits==1:
         index = culprits.index(True)

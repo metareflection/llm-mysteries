@@ -13,7 +13,7 @@ stats = {'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
 
 def generate_node(s, qual, story, w=''):
     dir = f"{qual} evidence ({w}mean, {w}motive, {w}opportunity) for {s} in the story."
-    return generate_rest(f"Find {dir}.\n{story}\nSo find {dir}.")
+    return generate_rest(f"Find {dir}\n{story}\nSo find {dir}")
 
 def generate_nodes(ss, qual, story, w=''):
     return [generate_node(s, qual, story, w) for s in ss]
@@ -41,16 +41,16 @@ def processCase(x):
     elif n_culprits==1:
         index = culprits.index(True)
         found_culprit = ss[index]
-        print("Found culprit {found_culprit}. Real culprit {x}.")
+        print(f"Found culprit {found_culprit}. Real culprit {real_culprit}.")
         stats['found' if found_culprit==real_culprit else 'not_found'] += 1
     else:
-        print("Found {n_culprit} culprits.")
+        print(f"Found {n_culprit} culprits out of {len(ss)} suspects.")
         index = ss.index(real_culprit)
         if culprits[index]:
-            print("Including real culprit.")
+            print(f"Including real culprit {real_culprit}.")
             stats['within'] += 1
         else:
-            print("Excluding real culprit.")
+            print(f"Excluding real culprit {real_culprit}.")
             stats['not_within'] += 1
     return x
 

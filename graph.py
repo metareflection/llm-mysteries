@@ -10,15 +10,25 @@ bool_choices = ["No", "Yes"]
 
 stats = {'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
 
+def generate_node(s, qual, story, w=''):
+    dir = f"{qual} evidence ({w}mean, {w}motive, {w}opportunity) for {s} in the story."
+    return generate_rest(f"Find {dir}.\n{story}\nSo find{dir}.")
+
+def generate_nodes(ss, qual, story, w=''):
+    return [generate_node(s, qual, story, w) for s in ss]
+
+def generate_summary(ss, qual, nodes):
+    return [extractor.gen(f"Possible {qual} evidence: {n}\nBased on what precedes, is there {qual} evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(nodes,ss)]
+
 def processCase(x):
     global stats
     print(f"## {x['comment']}")
     ss = suspects(x)
     story = x['input']
-    incriminating_nodes = [generate_rest(f"Find incrinimating evidence (mean, motive, opportunity) for {s} in the following story. {story}") for s in ss]
-    exonerating_nodes = [generate_rest(f"Find exonerating evidence (mean, motive, opportunity) for {s} in the following story. {story}") for s in ss]
-    incriminating_summary = [extractor.gen(f"{n}\nBased on what precedes, is there incriminating evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(incriminating_nodes,ss)]
-    exonerating_summary = [extractor.gen(f"{n}\nBased on what precedes, is there exonerating evidence for {s}? Answer with Yes or No.", bool_choices) for (n,s) in zip(exonerating_nodes,ss)]
+    incriminating_nodes = generate_nodes(ss, "incriminating", story)
+    exonerating_nodes = generate_nodes(ss, "exonerating", story, w='no ')
+    incriminating_summary = generate_summary(ss, "incriminating", incriminating_nodes)
+    exonerating_summary = generate_summary(ss, "exonerating", exonerating_nodes)
     incriminating = [z=='Yes' for z in incriminating_summary]
     exonerating = [z=='Yes' for z in exonerating_summary]
     culprits = [y and (not n) for (y,n) in zip(incriminating, exonerating)]

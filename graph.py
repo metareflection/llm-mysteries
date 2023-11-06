@@ -9,11 +9,11 @@ def generate_rest(msg):
 
 bool_choices = ["No", "Yes"]
 
-stats = {'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
+stats = {'found_none': 0, 'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
 
 def generate_node(s, qual, story, w=''):
-    dir = f"{qual} evidence ({w}mean, {w}motive, {w}opportunity) for {s} in the story."
-    return generate_rest(f"Find {dir}\n{story}\nSo find {dir}")
+    dir = f"{qual} evidence ({w}mean, {w}motive, {w}opportunity) for {s} in the story:"
+    return generate_rest(f"Find {dir}\n{story}\nNow find {dir}")
 
 def generate_nodes(ss, qual, story, w=''):
     return [generate_node(s, qual, story, w) for s in ss]
@@ -37,14 +37,14 @@ def processCase(x):
     real_culprit = culprit(x)
     if n_culprits==0:
         print("Found no culprit.")
-        stats['not_found'] += 1
+        stats['found_none'] += 1
     elif n_culprits==1:
         index = culprits.index(True)
         found_culprit = ss[index]
         print(f"Found culprit {found_culprit}. Real culprit {real_culprit}.")
         stats['found' if found_culprit==real_culprit else 'not_found'] += 1
     else:
-        print(f"Found {n_culprit} culprits out of {len(ss)} suspects.")
+        print(f"Found {n_culprits} culprits out of {len(ss)} suspects.")
         index = ss.index(real_culprit)
         if culprits[index]:
             print(f"Including real culprit {real_culprit}.")

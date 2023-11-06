@@ -34,7 +34,7 @@ def generate(eval_prompt, max_new_tokens=200):
     r = None
     with torch.no_grad():
         r = tokenizer.decode(model.generate(**model_input,
-                                            streamer=streamer,
+                                            #streamer=streamer,
                                             max_new_tokens=max_new_tokens)[0],
                              skip_special_tokens=True)
     return r

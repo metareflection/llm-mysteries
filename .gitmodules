@@ -1,3 +1,6 @@
 [submodule "BIG-bench"]
 	path = BIG-bench
 	url = https://github.com/google/BIG-bench.git
+[submodule "MuSR"]
+	path = MuSR
+	url = https://github.com/Zayne-sprague/MuSR.git

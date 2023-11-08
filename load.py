@@ -6,6 +6,12 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/minute_mysteries_qa/multiplechoi
 
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
+def tagline(x):
+    return x['comment']
+
+def story_text(x):
+    return x['input']
+
 def suspects(x):
     return [k for k,v in x['target_scores'].items() if v is not None]
 

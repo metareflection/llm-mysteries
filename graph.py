@@ -1,6 +1,7 @@
 import llm
 import extractor
-from load import dataset, suspects, culprit
+from load import dataset, suspects, culprit, tagline, story_text
+#from load_musr import dataset, suspects, culprit, tagline, story_text
 
 def generate_rest(msg):
     res = llm.generate(msg)
@@ -22,9 +23,9 @@ def generate_summary(ss, qual, nodes):
 
 def processCase(x):
     global stats
-    print(f"## {x['comment']}")
+    print(f"## {tagline(x)}")
     ss = suspects(x)
-    story = x['input']
+    story = story_text(x)
     incriminating_nodes = generate_nodes(ss, "incriminating", story)
     exonerating_nodes = generate_nodes(ss, "exonerating", story, w='no ')
     incriminating_summary = generate_summary(ss, "incriminating", incriminating_nodes)
@@ -57,9 +58,9 @@ stats2 = {'found': 0, 'not_found': 0}
 
 def processCase2(x):
     global stats2
-    print(f"## {x['comment']}")
+    print(f"## {tagline(x)}")
     ss = suspects(x)
-    story = x['input']
+    story = story_text(x)
     incriminating_nodes = generate_nodes(ss, "incriminating", story)
     exonerating_nodes = generate_nodes(ss, "exonerating", story, w='no ')
     prompt = "Find the culprit based on the evidence.\n\n"
@@ -80,9 +81,9 @@ def processCase2(x):
 
 def processCase3(x):
     global stats
-    print(f"## {x['comment']}")
+    print(f"## {tagline(x)}")
     ss = suspects(x)
-    story = x['input']
+    story = story_text(x)
     incriminating_nodes = generate_nodes(ss, "incriminating", story)
     exonerating_nodes = generate_nodes(ss, "exonerating", story, w='no ')
     incriminating_summary = generate_summary(ss, "incriminating", incriminating_nodes)

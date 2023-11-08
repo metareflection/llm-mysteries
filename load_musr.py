@@ -5,6 +5,12 @@ task_json = 'MuSR/datasets/murder_mystery.json'
 
 dataset = load_dataset('json', data_files=task_json)
 
+def tagline(x):
+    return 'STORY'
+
+def story_text(x):
+    return x['context']
+
 def suspects(x):
     return x['questions'][0]['choices']
 

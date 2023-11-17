@@ -24,6 +24,7 @@ def belief_probability(prompt):
     print(question)
     belief_generator.sequence_log_prob = 0.0
     val = belief_generator(prompt)
+    val = True if val=='True' else False
     confidence = exp(belief_generator.sequence_log_prob)
     print(f"{val} ({confidence})")
     return (val, confidence)

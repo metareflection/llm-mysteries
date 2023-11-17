@@ -16,11 +16,13 @@ def make_greedy_tracker(generator, mask_token_ids=None):
         logits: torch.DoubleTensor, samples: int, *_
     ) -> torch.DoubleTensor:
         next_token_ids = greedy(logits, samples)
-
         probs = torch.nn.functional.softmax(logits, dim=-1)
         if mask_token_ids:
             norm = sum([probs[:, id].squeeze() for id in mask_token_ids])
         else:
+            norm = 1.0
+        # TODO: hack!
+        if norm < 0.01:
             norm = 1.0
         generator.sequence_log_prob += torch.log(
             norm*probs[:, next_token_ids.squeeze()].squeeze()
@@ -32,7 +34,7 @@ def make_greedy_tracker(generator, mask_token_ids=None):
 
     def new_call(self, *args, **kwargs):
         # Reset the sequence log-probability
-        self.sequence_log_prob = 0.0
+        self.sequence_log_prob = 0.0 # TODO: does not seem to reset
         return super().__call__(*args, **kwargs)
 
     generator.__call__ = types.MethodType(generator, new_call)

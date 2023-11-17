@@ -11,14 +11,18 @@ tokenizer.pad_token = tokenizer.eos_token
 
 bool_choices = ['True', 'False']
 
-mask_token_ids = [tokenizer.encode(w, add_special_tokens=False)[-1] for w in bool_choices]
+mask_token_ids = [tokenizer.encode(w)[-1] for w in bool_choices]
+mask_token_ids = [5574, 8824] # set it manually by inspection...
 
 belief_generator = make_greedy_tracker(
-    choice(model, bool_choices, max_tokens=50))
+    choice(model, bool_choices, max_tokens=50),
+    mask_token_ids
+)
 
 def belief_probability(prompt):
     question = prompt[0:prompt.index('?')+1]
     print(question)
+    belief_generator.sequence_log_prob = 0.0
     val = belief_generator(prompt)
     confidence = exp(belief_generator.sequence_log_prob)
     print(f"{val} ({confidence})")
@@ -29,7 +33,7 @@ def create_prompt(story, id, neg, what=None):
     if what is None:
         prompt = f"{id} is{' not' if neg else ''} guilty"
     else:
-        prompt = f"{id} has{' no' if neg else ''} mean"
+        prompt = f"{id} has{' no' if neg else ''} {what}"
     question = prompt + postfix
     return question + '\n' + story + '\n' + question
 

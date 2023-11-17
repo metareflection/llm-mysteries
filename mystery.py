@@ -109,3 +109,9 @@ if __name__ == '__main__':
     story_lines = story.split('\n')
     story_lines = [parse(line) for line in story_lines]
     print(solve(story_lines))
+
+    import belief_graph
+    print(belief_graph.solve(
+        story,
+        ['Fiona Duncan', 'Colonel Barrow', 'Abby Grant', 'Harold Duncan', 'Maurice Eades']
+    ))

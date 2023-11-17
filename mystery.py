@@ -36,7 +36,7 @@ def init_graph(story_lines):
         (id, what, val, confidence) = line
         d = get_init(suspects, id)
         d2 = get_init(d, what)
-        d2[val] = confidence
+        d2[val] = max(d2.get(val) or 0.0, confidence)
     return suspects
 
 def complete_graph(suspects):

@@ -25,7 +25,7 @@ def make_greedy_tracker(generator, mask_token_ids=None):
         if norm < 0.01:
             norm = 1.0
         generator.sequence_log_prob += torch.log(
-            probs[:, next_token_ids.squeeze()].squeeze()#/norm
+            probs[:, next_token_ids.squeeze()].squeeze()/norm
         )
 
         return next_token_ids

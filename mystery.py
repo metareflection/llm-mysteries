@@ -86,6 +86,13 @@ def find_guilty_suspect(model, vars, suspects):
             return id
     assert False
 
+def show_interpretation(model, vars, suspects):
+    for (id,d) in suspects.items():
+        print(f"### {id}")
+        for what in whats:
+            print(f"- {what}: {model[vars[what_var(id, what)]]}")
+        print("")
+
 def parse(line):
     m = re_line.fullmatch(line)
     assert m is not None
@@ -103,6 +110,7 @@ def solve(story_lines):
     add_hard_constraints(s, vars, suspects)
     assert s.check() == sat
     model = s.model()
+    show_interpretation(model, vars, suspects)
     return find_guilty_suspect(model, vars, suspects)
 
 if __name__ == '__main__':
@@ -110,8 +118,9 @@ if __name__ == '__main__':
     story_lines = [parse(line) for line in story_lines]
     print(solve(story_lines))
 
-    import belief_graph
-    print(belief_graph.solve(
-        story,
-        ['Fiona Duncan', 'Colonel Barrow', 'Abby Grant', 'Harold Duncan', 'Maurice Eades']
-    ))
+    if False:
+        import belief_graph
+        print(belief_graph.solve(
+            story,
+            ['Fiona Duncan', 'Colonel Barrow', 'Abby Grant', 'Harold Duncan', 'Maurice Eades']
+        ))

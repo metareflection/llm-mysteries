@@ -56,3 +56,18 @@ def complete_graph(suspects):
     return suspects
 
 suspects = complete_graph(init_graph(story_lines))
+
+def create_vars(suspects):
+    vars = {}
+    def add_var(s):
+        vars[s] = Bool(s)
+    for (id,d) in suspects.items():
+        add_var(f"{id} is guilty")
+        for what in whats:
+            add_var(f"{id} has {what}")
+    return vars
+
+vars = create_vars(suspects)
+
+
+            

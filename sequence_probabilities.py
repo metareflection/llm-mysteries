@@ -7,7 +7,7 @@ from outlines.text.generate.continuation import continuation
 from outlines.text.generate.sample import greedy
 
 
-def make_greedy_tracker(generator):
+def make_greedy_tracker(generator, mask_token_ids=None):
     import types
 
     generator.sequence_log_prob = 0.0
@@ -18,8 +18,12 @@ def make_greedy_tracker(generator):
         next_token_ids = greedy(logits, samples)
 
         probs = torch.nn.functional.softmax(logits, dim=-1)
+        if mask_token_ids:
+            norm = sum([probs[:, id].squeeze() for id in mask_token_ids])
+        else:
+            norm = 1.0
         generator.sequence_log_prob += torch.log(
-            probs[:, next_token_ids.squeeze()].squeeze()
+            norm*probs[:, next_token_ids.squeeze()].squeeze()
         )
 
         return next_token_ids

@@ -1,11 +1,17 @@
-from extractor import model
+from extractor import model, base_model_name
 from sequence_probabilities import make_greedy_tracker
 from outlines.text.generate.regex import choice
+from transformers import AutoTokenizer
 from math import exp
 from load import dataset, suspects, culprit, tagline, story_text
 import mystery
 
+tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
+tokenizer.pad_token = tokenizer.eos_token
+
 bool_choices = ['True', 'False']
+
+mask_token_ids = [tokenizer.encode(w, add_special_tokens=False)[-1] for w in bool_choices]
 
 belief_generator = make_greedy_tracker(
     choice(model, bool_choices, max_tokens=50))

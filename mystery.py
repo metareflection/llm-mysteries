@@ -33,14 +33,9 @@ def get_init(d, key):
 def init_graph(story_lines):
     suspects = {}
     for line in story_lines:
-        m = re_line.fullmatch(line)
-        assert m is not None
-        id = m['id']
+        (id, what, val, confidence) = line
         d = get_init(suspects, id)
-        what = m['what']
         d2 = get_init(d, what)
-        val = True if m['neg'] is None else False
-        confidence = len(m['bangs'])*0.2
         d2[val] = confidence
     return suspects
 
@@ -91,7 +86,16 @@ def find_guilty_suspect(model, vars, suspects):
             return id
     assert False
 
-def main(story_lines):
+def parse(line):
+    m = re_line.fullmatch(line)
+    assert m is not None
+    id = m['id']
+    what = m['what']
+    val = True if m['neg'] is None else False
+    confidence = len(m['bangs'])*0.2
+    return (id, what, val, confidence)
+
+def solve(story_lines):
     suspects = complete_graph(init_graph(story_lines))
     vars = create_vars(suspects)
     s = Optimize()
@@ -99,8 +103,9 @@ def main(story_lines):
     add_hard_constraints(s, vars, suspects)
     assert s.check() == sat
     model = s.model()
-    print(find_guilty_suspect(model, vars, suspects))
+    return find_guilty_suspect(model, vars, suspects)
 
 if __name__ == '__main__':
     story_lines = story.split('\n')
-    main(story_lines)
+    story_lines = [parse(line) for line in story_lines]
+    print(solve(story_lines))

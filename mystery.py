@@ -90,7 +90,8 @@ def show_interpretation(model, vars, suspects):
     for (id,d) in suspects.items():
         print(f"### {id}")
         for what in whats:
-            print(f"- {what}: {model[vars[what_var(id, what)]]}")
+            tv = model[vars[what_var(id, what)]]
+            print(f"- {what}: {tv} ({d[what][bool(tv)]})")
         print("")
 
 def parse(line):

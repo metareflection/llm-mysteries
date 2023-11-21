@@ -33,10 +33,10 @@ def get_init(d, key):
 def init_graph(story_lines):
     suspects = {}
     for line in story_lines:
-        (id, what, val, confidence) = line
+        (id, what, pos, val, confidence) = line
         d = get_init(suspects, id)
         d2 = get_init(d, what)
-        d2[val] = max(d2.get(val) or 0.0, confidence)
+        d2[pos] = max(d2.get(pos) or 0.0, confidence)
     return suspects
 
 def complete_graph(suspects):
@@ -54,6 +54,9 @@ def suspect_var(id):
 def what_var(id, what):
     return f"{id} has {what}"
 
+def no_what_var(id, what):
+    return f"{id} has no {what}"
+
 def create_vars(suspects):
     vars = {}
     def add_var(s):
@@ -62,19 +65,27 @@ def create_vars(suspects):
         add_var(suspect_var(id))
         for what in whats:
             add_var(what_var(id, what))
+            add_var(no_what_var(id, what))
     return vars
 
 def add_soft_constraints(s, vars, suspects):
     for (id,d) in suspects.items():
         for what in whats:
-           v = vars[what_var(id, what)]
-           s.add_soft(Not(v), exp(-d[what][True]))
-           s.add_soft(v, exp(-d[what][False]))
+            positive_variable = vars[what_var(id, what)]
+            negative_variable = vars[no_what_var(id, what)]
+            s.add_soft(Not(positive_variable), exp(-d[what][True]))
+            s.add_soft(positive_variable, exp(-d[what][False]))
+            s.add_soft(Not(negative_variable), exp(-d[what][False]))
+            s.add_soft(negative_variable, exp(-d[what][True]))
 
 def add_hard_constraints(s, vars, suspects):
     xor_expr = Sum([If(vars[suspect_var(id)], 1, 0) for id in suspects.keys()]) == 1
     s.add(xor_expr)
     for (id,d) in suspects.items():
+        for what in whats:
+            positive_variable = vars[what_var(id, what)]
+            negative_variable = vars[no_what_var(id, what)]
+            s.add(Xor(positive_variable, negative_variable)) # going off https://z3prover.github.io/api/html/namespacez3py.html
         var_id = vars[suspect_var(id)]
         all_whats = And(*[vars[what_var(id, what)] for what in whats])
         s.add(Implies(all_whats, var_id))
@@ -99,9 +110,18 @@ def parse(line):
     assert m is not None
     id = m['id']
     what = m['what']
-    val = True if m['neg'] is None else False
+    pos = True if m['neg'] is None else False
+    val = None
+    # if positive statement
+    if pos:
+        # if "has no" is not in the line and we are at a positive statement, then
+        # val is True. Otherwise False?
+        val = "has no" not in line
+    else:
+        # inverse of above since we are in a negative statement now
+        val = "has no" in line
     confidence = len(m['bangs'])*0.2
-    return (id, what, val, confidence)
+    return (id, what, pos, val, confidence)
 
 def solve(story_lines):
     suspects = complete_graph(init_graph(story_lines))

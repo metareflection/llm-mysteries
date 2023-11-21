@@ -36,16 +36,19 @@ def init_graph(story_lines):
         (id, what, pos, val, confidence) = line
         d = get_init(suspects, id)
         d2 = get_init(d, what)
-        d2[pos] = max(d2.get(pos) or 0.0, confidence)
+        d3 = get_init(d2, pos)
+        d3[val] = max(d3.get(val) or 0.0, confidence)
     return suspects
 
 def complete_graph(suspects):
     for (id,d) in suspects.items():
         for what in whats:
-            for val in [True, False]:
-                d2 = get_init(d, what)
-                if val not in d2:
-                    d2[val] = 0.0
+            d2 = get_init(d, what)
+            for pos in [True, False]:
+                d3 = get_init(d2, pos)
+                for val in [True, False]:
+                    if val not in d3:
+                        d3[val] = 0.0
     return suspects
 
 def suspect_var(id):
@@ -73,10 +76,10 @@ def add_soft_constraints(s, vars, suspects):
         for what in whats:
             positive_variable = vars[what_var(id, what)]
             negative_variable = vars[no_what_var(id, what)]
-            s.add_soft(Not(positive_variable), exp(-d[what][True]))
-            s.add_soft(positive_variable, exp(-d[what][False]))
-            s.add_soft(Not(negative_variable), exp(-d[what][False]))
-            s.add_soft(negative_variable, exp(-d[what][True]))
+            s.add_soft(Not(positive_variable), exp(-d[what][True][True]))
+            s.add_soft(positive_variable, exp(-d[what][True][False]))
+            s.add_soft(Not(negative_variable), exp(-d[what][False][True]))
+            s.add_soft(negative_variable, exp(-d[what][False][False]))
 
 def add_hard_constraints(s, vars, suspects):
     xor_expr = Sum([If(vars[suspect_var(id)], 1, 0) for id in suspects.keys()]) == 1
@@ -102,7 +105,7 @@ def show_interpretation(model, vars, suspects):
         print(f"### {id}")
         for what in whats:
             tv = model[vars[what_var(id, what)]]
-            print(f"- {what}: {tv} ({d[what][bool(tv)]})")
+            print(f"- {what}: {tv} ({d[what][True][bool(tv)]})")
         print("")
 
 def parse(line):
@@ -111,15 +114,7 @@ def parse(line):
     id = m['id']
     what = m['what']
     pos = True if m['neg'] is None else False
-    val = None
-    # if positive statement
-    if pos:
-        # if "has no" is not in the line and we are at a positive statement, then
-        # val is True. Otherwise False?
-        val = "has no" not in line
-    else:
-        # inverse of above since we are in a negative statement now
-        val = "has no" in line
+    val = True
     confidence = len(m['bangs'])*0.2
     return (id, what, pos, val, confidence)
 

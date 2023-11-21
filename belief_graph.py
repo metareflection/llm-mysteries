@@ -42,10 +42,10 @@ def create_story_lines(story, suspect_list):
     lines = []
     for suspect in suspect_list:
         for what in [None] + mystery.whats:
-            #for neg in [True, False]:
-            (val, confidence) = belief_probability(create_prompt(story, suspect, False, what))
-            lines.append((suspect, what, val, confidence))
-            lines.append((suspect, what, not val, 1.0-confidence))
+            for pos in [True, False]:
+                (val, confidence) = belief_probability(create_prompt(story, suspect, not pos, what))
+                lines.append((suspect, what, pos, val, confidence))
+                lines.append((suspect, what, not pos, not val, 1.0-confidence))
     return lines
 
 def solve(story, suspect_list):

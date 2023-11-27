@@ -84,10 +84,15 @@ def add_soft_constraints(s, vars, suspects):
         for what in whats:
            v = vars[what_var(id, what)] # v holds the boolean variable we defined for each what node variable
 
-           # NOTE: inverse logic here checks out!
-           # we are placing a weight (aka cost) on the constraint of the negation of the variable to be the confidence of the variable itself
-           s.add_soft(Not(v), exp(-d[what][True]))
-           s.add_soft(v, exp(-d[what][False]))
+           # NOTE: be careful when thinking through this logic --> add_soft(arg, weight) --> means the Z3 model incurs the weight if it violates the argument
+           # also note that we are raising e^(-negative confidence), so if the LLM has high confidence on a what node being true, the weight will be very low
+
+           # so taking the inverse of the confidence/belief of a what node should be how much penalty is incurred if we violate the negation of the what node
+           # since violating the negation of the what node is satisfying the what node itself --> high confidence/belief means low penalty in violating negation
+           # while low confidence/belief means high peanlty for violating negation
+
+           s.add_soft(Not(v), exp(-d[what][True])) 
+           s.add_soft(v, exp(-d[what][False])) 
 
 def add_hard_constraints(s, vars, suspects):
     # places an XOR constraint on all the suspects being guilty so that exactly 1 suspect is guilty

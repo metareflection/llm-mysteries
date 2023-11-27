@@ -1,6 +1,9 @@
+# This file just contains some setup for the LLM
+
 import torch
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer, TextStreamer
 
+# NOTE: THESE MODEL NAMES AREN'T WHAT ARE ACTUALLY USED. LOOK AT EXTRACTOR.PY FOR THE TRUE MODEL CHOICES
 #base_model_name = "mistralai/Mistral-7B-v0.1"
 #base_model_name = "meta-llama/Llama-2-70b-hf"
 base_model_name = "meta-llama/Llama-2-70b-chat-hf"

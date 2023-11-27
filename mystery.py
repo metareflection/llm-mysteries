@@ -30,21 +30,31 @@ def get_init(d, key):
         d[key] = {}
     return d[key]
 
+# returns the belief graph representing the beliefs for all the storylines
 def init_graph(story_lines):
     suspects = {}
-    for line in story_lines:
+    for line in story_lines: # for each belief in the list of LLM's storylines
         (id, what, val, confidence) = line
-        d = get_init(suspects, id)
-        d2 = get_init(d, what)
+
+        # when init_graph calls get_init with suspects, it creates just the suspect nodes for each suspect in the storylines, initializing suspects as keys and values as nested empty dictionaries
+        d = get_init(suspects, id) # d is now a empty dictionary that is the value of what Character X is mapped to in the suspects dictionary
+
+        # when init_graph calls get_init with d, it turns Character X's empty dictionary to be initialized with keys as each what node and values as empty dicts
+        d2 = get_init(d, what) 
+
+        # the confidence value for the current belief we are iterating on is updated in the 3rd layer of the graph, with the value being the max
+        # of either the confidence of the current belief itself or the value (confidence) that was previously stored in the graph for a past belief -- if we have no
+        # past beliefs, simply consider 0
         d2[val] = max(d2.get(val) or 0.0, confidence)
     return suspects
 
+# takes in the initialized belief graph 
 def complete_graph(suspects):
     for (id,d) in suspects.items():
         for what in whats:
             for val in [True, False]:
-                d2 = get_init(d, what)
-                if val not in d2:
+                d2 = get_init(d, what) # get the mapping of the confidences of True/False for the current what node we are on for the current suspect we are on
+                if val not in d2: # we are iterating through True and False, so if either of those is not in the graph yet, set them to be 0 to make the graph structure complete
                     d2[val] = 0.0
     return suspects
 
@@ -54,46 +64,63 @@ def suspect_var(id):
 def what_var(id, what):
     return f"{id} has {what}"
 
+# this function creates boolean variables representing if each suspect is guilty and for if each suspect has a given what node
 def create_vars(suspects):
     vars = {}
     def add_var(s):
         vars[s] = Bool(s)
+
+
     for (id,d) in suspects.items():
-        add_var(suspect_var(id))
+        add_var(suspect_var(id)) # for each suspect, a variable is created like "Character X is guilty"
         for what in whats:
-            add_var(what_var(id, what))
+            add_var(what_var(id, what)) # For each 'what' of each suspect, a variable is created like "Character X has mean".
+
+    # the strings are the keys and the values are the boolean variables representing the keys
     return vars
 
 def add_soft_constraints(s, vars, suspects):
     for (id,d) in suspects.items():
         for what in whats:
-           v = vars[what_var(id, what)]
+           v = vars[what_var(id, what)] # v holds the boolean variable we defined for each what node variable
+
+           # NOTE: inverse logic here checks out!
+           # we are placing a weight (aka cost) on the constraint of the negation of the variable to be the confidence of the variable itself
            s.add_soft(Not(v), exp(-d[what][True]))
            s.add_soft(v, exp(-d[what][False]))
 
 def add_hard_constraints(s, vars, suspects):
-    xor_expr = Sum([If(vars[suspect_var(id)], 1, 0) for id in suspects.keys()]) == 1
+    # places an XOR constraint on all the suspects being guilty so that exactly 1 suspect is guilty
+    xor_expr = Sum([If(vars[suspect_var(id)], 1, 0) for id in suspects.keys()]) == 1 
     s.add(xor_expr)
+
+    # places a constraint such that if all of the what nodes for a suspect are true, then 'suspect is guilty' node is true -- meaning they are guilty
+    # similarly, if all of the what nodes for a suspect are false, then 'suspect is not guilty node' is true -- meaning they are not guilty
+
+    # perhaps this logic could be tweaked? Right now we assume that each what node has to be true for a suspect to be guilty, but will this be the case always? TODO: could play around with the constraints enforced here
     for (id,d) in suspects.items():
         var_id = vars[suspect_var(id)]
         all_whats = And(*[vars[what_var(id, what)] for what in whats])
         s.add(Implies(all_whats, var_id))
         s.add(Implies(Not(all_whats), Not(var_id)))
 
+# Simply return the suspect for the suspect that is found guilty by the Z3 model
 def find_guilty_suspect(model, vars, suspects):
     for id in suspects.keys():
         if model[vars[suspect_var(id)]]:
             return id
     assert False
 
+# just printing
 def show_interpretation(model, vars, suspects):
     for (id,d) in suspects.items():
         print(f"### {id}")
         for what in whats:
-            tv = model[vars[what_var(id, what)]]
-            print(f"- {what}: {tv} ({d[what][bool(tv)]})")
+            tv = model[vars[what_var(id, what)]] # get the truth value as stored in the Z3 model
+            print(f"- {what}: {tv} ({d[what][bool(tv)]})") # print the truth value from Z3 model and confidence (belief score) stored in nested belief graph from LLM output
         print("")
 
+# This function isn't called by belief_graph.py --> used in main() for the sample story
 def parse(line):
     m = re_line.fullmatch(line)
     assert m is not None
@@ -103,17 +130,26 @@ def parse(line):
     confidence = len(m['bangs'])*0.2
     return (id, what, val, confidence)
 
+# belief_graph.py calls this function, passing in all the storylines that the LLM has generated and its corresponding beliefs.
 def solve(story_lines):
+    # first creates a graph of all the storylines, with the graph being represented in nested dictionary format, then makes the graph complete with all the possible edges
     suspects = complete_graph(init_graph(story_lines))
+
+    # create variables for each suspect's guilt and their what nodes, mapping them to a bool variable in the vars dict
     vars = create_vars(suspects)
+
     s = Optimize()
+
+    # add constraints to the Z3 model, which is now stored in s
     add_soft_constraints(s, vars, suspects)
     add_hard_constraints(s, vars, suspects)
     assert s.check() == sat
     model = s.model()
     show_interpretation(model, vars, suspects)
-    return find_guilty_suspect(model, vars, suspects)
+    return find_guilty_suspect(model, vars, suspects) # solve and return
 
+
+# this logic only operates on the sample story defined above for testing purposes, belief_graph.py never calls this
 if __name__ == '__main__':
     story_lines = story.split('\n')
     story_lines = [parse(line) for line in story_lines]

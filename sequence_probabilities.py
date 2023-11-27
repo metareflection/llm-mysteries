@@ -8,11 +8,16 @@ from outlines.text.generate.continuation import continuation
 from outlines.text.generate.sample import greedy
 
 
+# creates a custom text generator that uses a greedy strategy and tracks the cumulative log probability --> this is used to track the belief/confidence of generated text
+# takes in parameters as a regular generator function that generate text and mask_token_ids that are tokens to focus on
+# mask_token_ids is a optional parameter, but we pass in the tokens for True and False. If this parameter is not None, then we
+# normalize the probabilities to focus on just those tokens
 def make_greedy_tracker(generator, mask_token_ids=None):
     import types
 
-    generator.sequence_log_prob = 0.0
+    generator.sequence_log_prob = 0.0 #  track the cumulative log probability of the generated sequence.
 
+    # this function replaces the generator's sampling method with a custom method, that is set to be a greedy strategy
     def tracking_greedy(
         logits: torch.DoubleTensor, samples: int, *_
     ) -> torch.DoubleTensor:
@@ -25,16 +30,19 @@ def make_greedy_tracker(generator, mask_token_ids=None):
         # TODO: hack!
         if norm < 0.01:
             norm = 1.0
+
+        # add to the cumulative log probability
         generator.sequence_log_prob += torch.log(
             probs[:, next_token_ids.squeeze()].squeeze()/norm
         )
+    
 
         return next_token_ids
 
-    generator.sampler = tracking_greedy
+    generator.sampler = tracking_greedy # assigns the sampling function of the generator to be the custom sampling we just defined
 
     def new_call(self, *args, **kwargs):
-        # Reset the sequence log-probability
+        # Reset the sequence log-probability to represent a new query to the LLM
         self.sequence_log_prob = 0.0 # TODO: does not seem to reset
         return super().__call__(*args, **kwargs)
 

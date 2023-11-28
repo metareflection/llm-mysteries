@@ -30,13 +30,24 @@ def belief_probability(prompt):
     return (val, confidence)
 
 def create_prompt(story, id, neg, what=None):
-    postfix = ': True or False?'
-    if what is None:
-        prompt = f"{id} is{' not' if neg else ''} guilty"
-    else:
-        prompt = f"{id} has{' no' if neg else ''} {what}"
-    question = prompt + postfix
-    return question + '\n' + story + '\n' + question
+   postfix = ': True or False?'
+   if what is None:
+       prompt = f"{id} is{' not' if neg else ''} guilty"
+       detailed_postfix = "Consider all the evidence and context from the story. Is this conclusion about guilt reasonable? Answer with either ‘True’ or ‘False’ only. Is the statement True or False?"
+   elif what == 'mean':
+       prompt = f"{id} has{' no' if neg else ''} means to commit the crime"
+       detailed_postfix = "Reflect on the resources and tools available to the suspect as described in the story. Does this suspect have the means necessary for the crime? Answer with ‘True’ or ‘False’ only. Is the statement True or False?"
+   elif what == 'motive':
+       prompt = f"{id} has{' no' if neg else ''} motive for the crime"
+       detailed_postfix = "Consider the suspect's potential reasons and incentives as depicted in the story. Does this suggest a motive for committing the crime? Answer with ‘True’ or ‘False’ only. Is the statement True or False?"
+   elif what == 'opportunity':
+       prompt = f"{id} had the opportunity to commit the crime"
+       detailed_postfix = "Analyze the timeline and the suspect's whereabouts as narrated in the story. Did this suspect have the opportunity to commit the crime? Answer with ‘True’ or ‘False’ only. Is the statement True or False?"
+
+
+   question = prompt + postfix
+   detailed_question = prompt + detailed_postfix
+   return detailed_question + '\n' + story + '\n' + detailed_question
 
 def create_story_lines(story, suspect_list):
     lines = []

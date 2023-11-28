@@ -66,10 +66,15 @@ def create_vars(suspects):
 
 def add_soft_constraints(s, vars, suspects):
     for (id,d) in suspects.items():
+        suspect_guilty_var = vars[suspect_var(id)]
         for what in whats:
            v = vars[what_var(id, what)]
            s.add_soft(Not(v), exp(-d[what][True]))
            s.add_soft(v, exp(-d[what][False]))
+
+           # adding soft constraint from sentence to guilt 
+           s.add_soft(Implies(v, suspect_guilty_var), exp(d[what][True] - 1))
+           s.add_soft(Implies(Not(v), Not(suspect_guilty_var)), exp(d[what][False] - 1))
 
 def add_hard_constraints(s, vars, suspects):
     xor_expr = Sum([If(vars[suspect_var(id)], 1, 0) for id in suspects.keys()]) == 1

@@ -5,9 +5,12 @@ from transformers import AutoTokenizer
 from math import exp
 from load import dataset, suspects, culprit, tagline, story_text
 import mystery
+import spacy
 
 tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
+
+nlp = spacy.load('en_core_web_sm')
 
 bool_choices = ['True', 'False']
 
@@ -29,23 +32,36 @@ def belief_probability(prompt):
     print(f"{val} ({confidence})")
     return (val, confidence)
 
-def create_prompt(story, id, neg, what=None):
+def create_prompt(sentence, id, neg, what=None):
     postfix = ': True or False?'
     if what is None:
         prompt = f"{id} is{' not' if neg else ''} guilty"
     else:
         prompt = f"{id} has{' no' if neg else ''} {what}"
     question = prompt + postfix
-    return question + '\n' + story + '\n' + question
+
+    with open("prompts.txt", "a") as f:
+        f.write("=====BEGIN PROMPT======\n")
+        f.write(question + '\n' + sentence + '\n' + question + "\n")
+        f.write("======END PROMPT=====\n")
+
+    return question + '\n' + sentence + '\n' + question
 
 def create_story_lines(story, suspect_list):
     lines = []
-    for suspect in suspect_list:
-        for what in [None] + mystery.whats:
-            #for neg in [True, False]:
-            (val, confidence) = belief_probability(create_prompt(story, suspect, False, what))
-            lines.append((suspect, what, val, confidence))
-            lines.append((suspect, what, not val, 1.0-confidence))
+
+    # sentences = story.split(".") 
+    # Using NLP instead of a trivial .split(".") to split sentences
+    doc = nlp(story)
+    sentences = [sent.text.strip() for sent in doc.sents]
+
+    for sentence in sentences:
+        for suspect in suspect_list:
+            for what in [None] + mystery.whats:
+                #for neg in [True, False]:
+                (val, confidence) = belief_probability(create_prompt(sentence, suspect, False, what))
+                lines.append((suspect, what, val, confidence))
+                lines.append((suspect, what, not val, 1.0-confidence))
     return lines
 
 def solve(story, suspect_list):

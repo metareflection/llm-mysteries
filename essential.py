@@ -56,13 +56,11 @@ def process1(x):
     cur_choices_dict = question_choices(x)
     prompt = x['input']
     prompt += "\n\n"
-    prompt += f"The options are one of {', '.join(cur_choices_dict.keys())} as follows."
+    prompt += f"The options are one of {', '.join(['('+o+')' for o in cur_choices_dict.keys()])} as follows."
     prompt += "\n"
-    prompt += '\n'.join([f"{k}. {v}." for k,v in cur_choices_dict.items()])
+    prompt += '\n'.join([f"({k}). {v}." for k,v in cur_choices_dict.items()])
     prompt += "\n"
-    #prompt += f"Answer with one of {', '.join(cur_choices_dict.keys())}."
-    prompt += "\n"
-    prompt += f"The correct option is "
+    prompt += f"The correct option is ("
     print(prompt)
     print('')
     correct_answer = answer(x)

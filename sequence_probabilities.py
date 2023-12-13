@@ -1,3 +1,4 @@
+# adapted from https://gist.github.com/brandonwillard/e1f41053c599bb584d4b922251cd96f5
 import torch
 
 import outlines.models as models

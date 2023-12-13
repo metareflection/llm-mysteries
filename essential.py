@@ -9,8 +9,8 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essential
 
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
-base_model_name = "meta-llama/Llama-2-13b-chat-hf"
-#base_model_name = "meta-llama/Llama-2-70b-chat-hf"
+#base_model_name = "meta-llama/Llama-2-13b-chat-hf"
+base_model_name = "meta-llama/Llama-2-70b-hf"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -33,12 +33,12 @@ def gen_greedy(prompt, choices):
     return generate.choice(model, choices, sampler=sample.greedy)(prompt)
 
 choices_dict = {
-    "One": "Statement 1 alone is sufficient while statement 2 alone is insufficient",
-    "Two": "Statement 2 alone is sufficient while statement 1 alone is insufficient",
-    "Either": "Either statement 1 or statement 2 is sufficient",
-    "Together": "Statement 1 and statement 2 taken together are sufficient",
-    "Neither": "Neither statement 1 nor statement 2 nor statements 1 and 2 taken together is sufficient",
-    "Already": "The question can be answered without either statement"
+    "A": "Statement 1 alone is sufficient while statement 2 alone is insufficient",
+    "B": "Statement 2 alone is sufficient while statement 1 alone is insufficient",
+    "C": "Either statement 1 or statement 2 is sufficient",
+    "D": "Statement 1 and statement 2 taken together are sufficient",
+    "E": "Neither statement 1 nor statement 2 nor statements 1 and 2 taken together is sufficient",
+    "F": "The question can be answered without either statement"
 }
 
 
@@ -56,15 +56,21 @@ def process1(x):
     cur_choices_dict = question_choices(x)
     prompt = x['input']
     prompt += "\n\n"
-    prompt += '\n'.join([f"{k}: {v}." for k,v in cur_choices_dict.items()])
+    prompt += f"The options are one of {', '.join(cur_choices_dict.keys())} as follows."
     prompt += "\n"
-    prompt += f"Answer with exactly one of these words: {', '.join(cur_choices_dict.keys())}."
+    prompt += '\n'.join([f"{k}. {v}." for k,v in cur_choices_dict.items()])
     prompt += "\n"
+    #prompt += f"Answer with one of {', '.join(cur_choices_dict.keys())}."
+    prompt += "\n"
+    prompt += f"The correct option is "
     print(prompt)
+    print('')
     correct_answer = answer(x)
     print('Correct answer:', correct_answer)
     given_answer = gen_greedy(prompt, cur_choices_dict.keys())
     print('Given answer:', given_answer)
+    unconstrained_answer = generate.continuation(model, max_tokens=20, sampler=sample.greedy)(prompt)
+    print('Unconstrained answer:', unconstrained_answer)
     x['eval'] = given_answer == correct_answer
     print('')
     print('')

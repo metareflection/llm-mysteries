@@ -9,8 +9,8 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essential
 
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
-#base_model_name = "meta-llama/Llama-2-13b-chat-hf"
-base_model_name = "meta-llama/Llama-2-70b-hf"
+base_model_name = "meta-llama/Llama-2-13b-chat-hf"
+#base_model_name = "meta-llama/Llama-2-70b-hf"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -67,7 +67,7 @@ def process1(x):
     print('Correct answer:', correct_answer)
     given_answer = gen_greedy(prompt, cur_choices_dict.keys())
     print('Given answer:', given_answer)
-    unconstrained_answer = generate.continuation(model, max_tokens=20, sampler=sample.greedy)(prompt)
+    unconstrained_answer = generate.continuation(model, max_tokens=3, sampler=sample.greedy)(prompt)
     print('Unconstrained answer:', unconstrained_answer)
     x['eval'] = given_answer == correct_answer
     print('')

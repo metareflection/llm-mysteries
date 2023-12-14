@@ -15,6 +15,7 @@ Given answer: C
 Unconstrained answer: C).
 
 
+
 Does Alice like elephants more than zebras? Which of the following statements is/are sufficient to answer the previous question? 
 1. Elephants are Alice's favourite animals. 
 2. Zebras are the animals that Alice likes the least.
@@ -28,8 +29,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 All the students in a classroom wrote an exam. How many students are in the classroom? Which of the following statements is/are sufficient to answer the previous question? 
@@ -45,8 +47,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C). Either
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Which direction is Samuel facing in? Which of the following statements is/are sufficient to answer the previous question? 
@@ -62,8 +65,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Are there only blue balls in the basket? Which of the following statements is/are sufficient to answer the previous question? 
@@ -79,8 +83,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Does Leonid like carrots? Which of the following statements is/are sufficient to answer the previous question? 
@@ -96,8 +101,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 What is the probability of event B occurring? Which of the following statements is/are sufficient to answer the previous question? 
@@ -113,8 +119,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Will the building contractor need a special license? Which of the following statements is/are sufficient to answer the previous question? 
@@ -130,8 +137,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C). Either
+Given answer: D
+Unconstrained answer: D).
+
 
 
 A wall is built in 6 hours by 10 men. How long will it take for 5 brick-laying machines to build the wall? Which of the following statements is/are sufficient to answer the previous question? 
@@ -147,8 +155,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C). Either
+Given answer: D
+Unconstrained answer: D).
+
 
 
 What is the number of people in Ramya's restaurant? Which of the following statements is/are sufficient to answer the previous question? 
@@ -164,8 +173,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Who finished the task in the least amount of time between Liam, Pranav and Salma? Which of the following statements is/are sufficient to answer the previous question? 
@@ -181,8 +191,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 A family has 7 children. How many of the children are boys? Which of the following statements is/are sufficient to answer the previous question? 
@@ -198,8 +209,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -216,8 +227,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Is Alexia a doctor? Which of the following statements is/are sufficient to answer the previous question? 
@@ -233,8 +245,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Will there be more crocodile attacks next year? Which of the following statements is/are sufficient to answer the previous question? 
@@ -250,8 +263,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C). Either
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Did African member states form the largest regional group in the United Nations in 1999? Which of the following statements is/are sufficient to answer the previous question?
@@ -267,8 +281,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 What is the value of x? Which of the following statements is/are sufficient to answer the previous question? 
@@ -284,8 +299,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -302,8 +317,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 A student needs to get at least 70% to pass the test. Does Student X pass the test? Which of the following statements is/are sufficient to answer the previous question? 
@@ -319,8 +335,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -337,8 +353,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Neha looks at a cup of water and says “This cup is more than half full.” Vighnesh looks at it and says, “No, it’s at least half empty.” Who is right?
@@ -356,7 +373,8 @@ The correct option is (
 
 Correct answer: F
 Given answer: C
-Unconstrained answer: C). Either
+Unconstrained answer: C).
+
 
 
 Can Bill afford to buy more $50 pots for his garden? Which of the following statements is/are sufficient to answer the previous question? 
@@ -372,8 +390,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C). Either
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How is Tim related to Justin? Which of the following statements is/are sufficient to answer the previous question? 
@@ -389,8 +408,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Is x a prime number? Which of the following statements is/are sufficient to answer the previous question? 
@@ -406,8 +426,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many people in Maria's office read the newspaper? Which of the following statements is/are sufficient to answer the previous question? 
@@ -423,8 +444,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Who is the third tallest among Rachel, Rahi, Kathy, Komal and Rita given that no two people are of the same height? Which of the following statements is/are sufficient to answer the previous question? 
@@ -440,8 +462,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Is x divisible by 2? Which of the following statements is/are sufficient to answer the previous question? 
@@ -457,8 +480,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How old is Qi? Which of the following statements is/are sufficient to answer the previous question? 
@@ -474,8 +498,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 When is Tony's birthday? Which of the following statements is/are sufficient to answer the previous question? 
@@ -491,8 +516,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 There are 50 cowsheds on a farm. How many cows live on the farm? Which of the following statements is/are sufficient to answer the previous question? 
@@ -508,8 +534,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -530,7 +556,8 @@ The correct option is (
 
 Correct answer: F
 Given answer: C
-Unconstrained answer: C). Either
+Unconstrained answer: C).
+
 
 
 Are some PQRs also XYZs? Which of the following statements is/are sufficient to answer the previous question? 
@@ -546,8 +573,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Alina wants to read an adventure book. She is given a book titled "Under the Sun". Will Alina want to read "Under the Sun"? Which of the following statements is/are sufficient to answer the previous question?
@@ -563,8 +591,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Betty answered a question incorrectly on a True-or-False test. What is the correct answer? Which of the following statements is/are sufficient to answer the previous question? 
@@ -580,8 +609,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 There are 4 students - S, T, U and V. What is the difference in the marks obtained by S and V? Which of the following statements is/are sufficient to answer the previous question?
@@ -597,8 +627,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Who is G sitting opposite to in a game of Monopoly involving four players E, F, G, H? Which of the following statements is/are sufficient to answer the previous question?
@@ -614,8 +645,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Q is the brother of R. How is R related to Q? Which of the following statements is/are sufficient to answer the previous question?
@@ -631,8 +663,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -649,8 +681,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 What time does the clock show? Which of the following statements is/are sufficient to answer the previous question?
@@ -666,8 +699,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 P is towards which direction of Q? Which of the following statements is/are sufficient to answer the previous question?
@@ -683,8 +717,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How is A related to B? Which of the following statements is/are sufficient to answer the previous question?
@@ -700,8 +735,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 What time does the bus leave for the airport today? Which of the following statements is/are sufficient to answer the previous question?
@@ -717,8 +753,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Is Ajay the only son of Aparna? Which of the following statements is/are sufficient to answer the previous question?
@@ -734,8 +771,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many students are sitting in a row facing the board? Which of the following statements is/are sufficient to answer the previous question?
@@ -751,8 +789,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 In a game, words for colours are mixed up. What is the colour of a fresh tomato in this game? Which of the following statements is/are sufficient to answer the previous question?
@@ -768,8 +807,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Kubera, the wealthy king of the Yakshas, liked all things made of gold and silver. The king decided to gift every Yaksha family a spherical globe made of solid gold with a cylindrical silver rod passing through its center. His goldsmith told him that this would require a 6 cm long, perfectly cylindrical hole to be bored through each perfectly spherical golden globe in order to insert the silver piece. Only the gold surrounding the curved surface of the silver cylinder would be retained. Kubera wanted the silver rod to be inserted but he was worried that gold was going to have to be removed from each of the globes. The goldsmith assured him that there would still be a fair bit of gold still left after the drilling.
@@ -787,8 +827,9 @@ The options are one of (A), (B), (C), (D), (F) as follows.
 The correct option is (
 
 Correct answer: F
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many pages of a history textbook were read on Thursday? Which of the following statements is/are sufficient to answer the previous question?
@@ -804,8 +845,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How is Karan related to Jhanvi? Which of the following statements is/are sufficient to answer the previous question?
@@ -821,8 +863,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many girls are there in a family of 4 children? Which of the following statements is/are sufficient to answer the previous question?
@@ -838,8 +881,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 At the finals of the All India Logic competition, the announcer displays six words:  MOSS, DRAG, CULT, CHOP, TRIM, GUTS. Each of the 4 finalists, representing the 4 regional champions within India (North, South, East & West), is given an envelope. Each of those 4 envelopes bear one distinct letter from one of those six words. All those distinct letters in the three envelopes are chosen from the same word. The contestants are forbidden from disclosing the letter in their envelope to anybody else. Each contestant has to determine the chosen word from the list of six.
@@ -858,8 +902,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C). Either
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Which of the following statements is more probable?
@@ -878,7 +923,8 @@ The correct option is (
 
 Correct answer: F
 Given answer: C
-Unconstrained answer: C). Either
+Unconstrained answer: C).
+
 
 
 Is A heavier than B? Which of the following statements is/are sufficient to answer the previous question?
@@ -894,8 +940,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Akshay and Prachi developed their own code language. Which word in the code language means 'leaf'? Which of the following statements is/are sufficient to answer the previous question?
@@ -911,8 +958,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 On which date of the month was Jayant born in December 2012? Which of the following statements is/are sufficient to answer the previous question?
@@ -928,8 +976,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 A water pump pumps water at a uniform rate. How long does it take to fill the tank? Which of the following statements is/are sufficient to answer the previous question?
@@ -945,8 +994,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -963,8 +1012,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many daughters does Devi have? Which of the following statements is/are sufficient to answer the previous question?
@@ -980,8 +1030,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Among 5 friends - Anjali, Arun, Ritika, Vishwesh and Kartik, who is the tallest? Which of the following statements is/are sufficient to answer the previous question?
@@ -997,8 +1048,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How is X related to Y? Which of the following statements is/are sufficient to answer the previous question?
@@ -1014,8 +1066,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Each of A, B, C and D play exactly one sport among football, cricket, hockey and chess. Who plays cricket? Which of the following statements is/are sufficient to answer the previous question?
@@ -1031,8 +1084,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How much does a clock lose in a day? Which of the following statements is/are sufficient to answer the previous question?
@@ -1048,8 +1102,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: B
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many tabla instructors teach in this city? Which of the following statements is/are sufficient to answer the previous question?
@@ -1065,8 +1120,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 There are two hospitals. One of them is near me while the other is far away. In which of the hospitals will there be more male births than female births? Which of the following statements is/are sufficient to answer the previous question?
@@ -1082,8 +1138,8 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
 
@@ -1100,8 +1156,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: E
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 How many fans went to the stadium yesterday? Which of the following statements is/are sufficient to answer the previous question?
@@ -1117,8 +1174,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: A
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 There are 4 friends - M, N, O and P. How many friends are older than O? Which of the following statements is/are sufficient to answer the previous question?
@@ -1134,8 +1192,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Ravi is ranked 22 from the top in a class. What is his rank from the bottom? Which of the following statements is/are sufficient to answer the previous question?
@@ -1151,8 +1210,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: C
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
+
 
 
 Socks P, Q, R, S, T and U form 3 pairs. P pairs with neither Q nor R. What are the pairs? Which of the following statements is/are sufficient to answer the previous question?
@@ -1168,8 +1228,9 @@ The options are one of (A), (B), (C), (D), (E) as follows.
 The correct option is (
 
 Correct answer: D
-Given answer: C
-Unconstrained answer: C).
+Given answer: D
+Unconstrained answer: D).
 
 
-Solved 10 out of 68.
+
+Solved 15 out of 68.

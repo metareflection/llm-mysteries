@@ -9,7 +9,7 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essential
 
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
-base_model_name = "meta-llama/Llama-2-13b-chat-hf"
+base_model_name = "meta-llama/Llama-2-13b-hf"
 #base_model_name = "meta-llama/Llama-2-70b-hf"
 
 bnb_config = BitsAndBytesConfig(

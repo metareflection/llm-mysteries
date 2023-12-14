@@ -10,7 +10,11 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essential
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
 use_gpt = False
-base_model_name = "meta-llama/Llama-2-13b-hf"
+use_expansion = False
+#base_model_name = "mistralai/Mistral-7B-v0.1"
+base_model_name = "mistralai/Mixtral-8x7B-v0.1"
+base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+#base_model_name = "meta-llama/Llama-2-13b-hf"
 #base_model_name = "meta-llama/Llama-2-70b-hf"
 
 bnb_config = BitsAndBytesConfig(
@@ -19,22 +23,25 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype=torch.float16,
 )
 
+def find_answer(r, choices):
+    print(r)
+    #answer = r[0]
+    c = r
+    while ')' in c:
+        i = c.index(')')
+        answer = c[i-1]
+        if answer in choices:
+            return answer
+        c = c[i+1:]
+    print('warning: non-conforming answer')
+    return None
+
 if use_gpt:
     from gpt import ask
 
     def gen_greedy(prompt, choices):
         r = ask(prompt, 'gpt-4-1106-preview')#, max_tokens=1)
-        print(r)
-        #answer = r[0]
-        c = r
-        while ')' in c:
-            i = c.index(')')
-            answer = c[i-1]
-            if answer in choices:
-                return answer
-            c = c[i+1:]
-        print('warning: non-conforming answer')
-        return None
+        return find_answer(r, choices)
 else:
     model = models.transformers(
     base_model_name,
@@ -47,10 +54,15 @@ else:
     },
     )
 
-    def gen_greedy(prompt, choices):
-        #unconstrained_answer = generate.continuation(model, max_tokens=3, sampler=sample.greedy)(prompt)
-        #print('Unconstrained answer:', unconstrained_answer)
-        return generate.choice(model, choices, sampler=sample.greedy)(prompt)
+    if use_expansion:
+        def gen_greedy(prompt, choices):
+            r = generate.continuation(model)(prompt)
+            return find_answer(r, choices)
+    else:
+        def gen_greedy(prompt, choices):
+            #unconstrained_answer = generate.continuation(model, max_tokens=3, sampler=sample.greedy)(prompt)
+            #print('Unconstrained answer:', unconstrained_answer)
+            return generate.choice(model, choices, sampler=sample.greedy)(prompt)
 
 choices_dict = {
     "A": "Statement 1 alone is sufficient while statement 2 alone is insufficient",

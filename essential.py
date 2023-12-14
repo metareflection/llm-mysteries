@@ -9,6 +9,7 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essential
 
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
+use_gpt = False
 base_model_name = "meta-llama/Llama-2-13b-hf"
 #base_model_name = "meta-llama/Llama-2-70b-hf"
 
@@ -18,7 +19,24 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype=torch.float16,
 )
 
-model = models.transformers(
+if use_gpt:
+    from gpt import ask
+
+    def gen_greedy(prompt, choices):
+        r = ask(prompt, 'gpt-4-1106-preview')#, max_tokens=1)
+        print(r)
+        #answer = r[0]
+        c = r
+        while ')' in c:
+            i = c.index(')')
+            answer = c[i-1]
+            if answer in choices:
+                return answer
+            c = c[i+1:]
+        print('warning: non-conforming answer')
+        return None
+else:
+    model = models.transformers(
     base_model_name,
     device="auto",
     model_kwargs={
@@ -27,10 +45,12 @@ model = models.transformers(
         "trust_remote_code": True,
         "use_auth_token": True,
     },
-)
+    )
 
-def gen_greedy(prompt, choices):
-    return generate.choice(model, choices, sampler=sample.greedy)(prompt)
+    def gen_greedy(prompt, choices):
+        #unconstrained_answer = generate.continuation(model, max_tokens=3, sampler=sample.greedy)(prompt)
+        #print('Unconstrained answer:', unconstrained_answer)
+        return generate.choice(model, choices, sampler=sample.greedy)(prompt)
 
 choices_dict = {
     "A": "Statement 1 alone is sufficient while statement 2 alone is insufficient",
@@ -67,8 +87,6 @@ def process1(x):
     print('Correct answer:', correct_answer)
     given_answer = gen_greedy(prompt, cur_choices_dict.keys())
     print('Given answer:', given_answer)
-    unconstrained_answer = generate.continuation(model, max_tokens=3, sampler=sample.greedy)(prompt)
-    print('Unconstrained answer:', unconstrained_answer)
     x['eval'] = given_answer == correct_answer
     print('')
     print('')

@@ -10,12 +10,13 @@ task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essential
 dataset = load_dataset('json', data_files=task_json, field='examples')
 
 use_gpt = False
-use_expansion = False
+use_expansion = True
+use_instruction = True
 #base_model_name = "mistralai/Mistral-7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 #base_model_name = "meta-llama/Llama-2-13b-hf"
-#base_model_name = "meta-llama/Llama-2-70b-hf"
+base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -86,13 +87,22 @@ def answer(x):
     
 def process1(x):
     cur_choices_dict = question_choices(x)
-    prompt = x['input']
+    prompt = ""
+    if use_instruction:
+        prompt += "<s>[INST]"
+    prompt += x['input']
     prompt += "\n\n"
     prompt += f"The options are one of {', '.join(['('+o+')' for o in cur_choices_dict.keys()])} as follows."
     prompt += "\n"
     prompt += '\n'.join([f"({k}). {v}." for k,v in cur_choices_dict.items()])
     prompt += "\n"
-    prompt += f"The correct option is ("
+    if use_instruction:
+        prompt += f"What is the correct option? Think step by step."
+        prompt += "\n"
+        prompt += "[/INST]"
+        prompt += "\n"
+    else:
+        prompt += f"The correct option is ("
     print(prompt)
     print('')
     correct_answer = answer(x)

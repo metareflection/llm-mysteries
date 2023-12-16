@@ -6,10 +6,11 @@ import torch
 from transformers import BitsAndBytesConfig
 
 #base_model_name = "mistralai/Mistral-7B-v0.1"
-#base_model_name = "meta-llama/Llama-2-70b-hf" # takes forever!
+#base_model_name = "meta-llama/Llama-2-70b-hf"
 #base_model_name = "meta-llama/Llama-2-13b-hf"
-base_model_name = "meta-llama/Llama-2-13b-chat-hf"
+#base_model_name = "meta-llama/Llama-2-13b-chat-hf"
 #base_model_name = "meta-llama/Llama-2-70b-chat-hf"
+base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 #model = models.transformers(base_model_name, device="cuda")
 bnb_config = BitsAndBytesConfig(

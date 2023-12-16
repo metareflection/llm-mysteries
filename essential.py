@@ -5,7 +5,7 @@ import re
 import torch
 from transformers import BitsAndBytesConfig
 from datasets import load_dataset
-import wandb
+import common_wandb
 
 task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essentiality/task.json'
 
@@ -121,8 +121,7 @@ def process1(x, run=None):
     print('Success?', x['eval'])
     print('')
     print('')
-    if run:
-        run.log({"eval": 1 if x['eval'] else 0, "correct_answer": numerize(correct_answer), "given_answer": numerize(given_answer)})
+    common_wandb.log_eval(run, x['eval'], {"correct_answer": numerize(correct_answer), "given_answer": numerize(given_answer)})
     return x
 
 def processAll(run=None):
@@ -132,5 +131,5 @@ def processAll(run=None):
     print(f"Solved {solved} out of {total}.")
 
 if __name__ == '__main__':
-    run = wandb.init(project="llm-mysteries")
+    run = common_wandb.init('essential'
     processAll(run)

@@ -1,6 +1,7 @@
 import outlines.text.generate.sample as sample
 import outlines.text.generate as generate
 import outlines.models as models
+import re
 import torch
 from transformers import BitsAndBytesConfig
 from datasets import load_dataset
@@ -27,14 +28,11 @@ bnb_config = BitsAndBytesConfig(
 
 def find_answer(r, choices):
     print(r)
-    #answer = r[0]
-    c = r
-    while ')' in c:
-        i = c.rindex(')')-1
-        answer = c[i]
+    indices = [m.start(0)-1 for m in re.finditer(r"\)|:|\.|,|;| ", r)]
+    for i in reversed(indices):
+        answer = r[i]
         if answer in choices:
             return answer
-        c = c[:i]
     print('warning: non-conforming answer')
     return None
 

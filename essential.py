@@ -118,6 +118,7 @@ def process1(x, run=None):
     given_answer = gen_greedy(prompt, cur_choices_dict.keys())
     print('Given answer:', given_answer)
     x['eval'] = given_answer == correct_answer
+    print('Success?', x['eval'])
     print('')
     print('')
     if run:

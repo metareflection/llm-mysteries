@@ -4,6 +4,7 @@ import outlines.models as models
 import torch
 from transformers import BitsAndBytesConfig
 from datasets import load_dataset
+import wandb
 
 task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essentiality/task.json'
 
@@ -16,7 +17,7 @@ use_instruction = True
 base_model_name = "mistralai/Mixtral-8x7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 #base_model_name = "meta-llama/Llama-2-13b-hf"
-#base_model_name = "meta-llama/Llama-2-70b-chat-hf"
+base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -77,6 +78,10 @@ choices_dict = {
 
 reverse_choices_dict = dict([(v,k) for k,v in choices_dict.items()])
 
+choices_list = list(choices_dict.keys())
+def numerize(letter):
+    return choices_list.index(letter)+1 if letter is not None else 0
+
 def question_choices(x):
     r = dict([(reverse_choices_dict[k],k) for k,v in x['target_scores'].items() if v is not None])
     return dict([(k,v) for k,v in choices_dict.items() if k in r])
@@ -107,7 +112,7 @@ def craft_prompt(x, cur_choices_dict):
     print('')
     return prompt
 
-def process1(x):
+def process1(x, run=None):
     cur_choices_dict = question_choices(x)
     prompt = craft_prompt(x, cur_choices_dict)
     correct_answer = answer(x)
@@ -117,13 +122,16 @@ def process1(x):
     x['eval'] = given_answer == correct_answer
     print('')
     print('')
+    if run:
+        run.log({"eval": 1 if x['eval'] else 0, "correct_answer": numerize(correct_answer), "given_answer": numerize(given_answer)})
     return x
 
-def processAll():
-    results = dataset.map(process1)
+def processAll(run=None):
+    results = dataset.map(lambda x: process1(x, run))
     solved = len(list(1 for e in results['train']['eval'] if e==1))
     total = results.num_rows['train']
     print(f"Solved {solved} out of {total}.")
 
 if __name__ == '__main__':
-    processAll()
+    run = wandb.init(project="llm-mysteries")
+    processAll(run)

@@ -16,7 +16,7 @@ use_instruction = True
 base_model_name = "mistralai/Mixtral-8x7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 #base_model_name = "meta-llama/Llama-2-13b-hf"
-base_model_name = "meta-llama/Llama-2-70b-chat-hf"
+#base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -29,11 +29,11 @@ def find_answer(r, choices):
     #answer = r[0]
     c = r
     while ')' in c:
-        i = c.index(')')
-        answer = c[i-1]
+        i = c.rindex(')')-1
+        answer = c[i]
         if answer in choices:
             return answer
-        c = c[i+1:]
+        c = c[:i]
     print('warning: non-conforming answer')
     return None
 
@@ -84,9 +84,8 @@ def question_choices(x):
 def answer(x):
     y = [k for k,v in x['target_scores'].items() if v==1][0]
     return reverse_choices_dict[y]
-    
-def process1(x):
-    cur_choices_dict = question_choices(x)
+
+def craft_prompt(x, cur_choices_dict):
     prompt = ""
     if use_instruction:
         prompt += "<s>[INST]"
@@ -97,14 +96,20 @@ def process1(x):
     prompt += '\n'.join([f"({k}). {v}." for k,v in cur_choices_dict.items()])
     prompt += "\n"
     if use_instruction:
-        prompt += f"What is the correct option? Think step by step."
-        prompt += "\n"
+        prompt += f"What is the correct option? Think step by step.\n"
+        prompt += "Give logic for and against each statement being sufficient.\n"
+        prompt += "Conclude with which option is the correct one.\n"
         prompt += "[/INST]"
         prompt += "\n"
     else:
         prompt += f"The correct option is ("
     print(prompt)
     print('')
+    return prompt
+
+def process1(x):
+    cur_choices_dict = question_choices(x)
+    prompt = craft_prompt(x, cur_choices_dict)
     correct_answer = answer(x)
     print('Correct answer:', correct_answer)
     given_answer = gen_greedy(prompt, cur_choices_dict.keys())

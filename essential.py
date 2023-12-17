@@ -18,7 +18,7 @@ use_instruction = True
 base_model_name = "mistralai/Mixtral-8x7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 #base_model_name = "meta-llama/Llama-2-13b-hf"
-base_model_name = "meta-llama/Llama-2-70b-chat-hf"
+#base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -131,5 +131,5 @@ def processAll(run=None):
     print(f"Solved {solved} out of {total}.")
 
 if __name__ == '__main__':
-    run = common_wandb.init('essential'
+    run = common_wandb.init('essential')
     processAll(run)

@@ -9,7 +9,7 @@
 - [graph](graph.py) asks the LLM for exonerating and incriminating evidence for each suspect and symbolically combines the result.
 
 ### Attempt 3
-Inspired by _[LMs for Rationality_](https://arxiv.org/abs/2305.14250),
+Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 - [mystery](mystery.py) transforms a belief graph into a MaxSAT problem to be optimized for debugging consistency;
 - [belief_graph](graph.py) elicits a belief graph for a story.
 

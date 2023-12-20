@@ -5,7 +5,7 @@ import re
 import torch
 from transformers import BitsAndBytesConfig
 from datasets import load_dataset
-import common_wandb
+# import common_wandb
 
 task_json = 'BIG-bench/bigbench/benchmark_tasks/evaluating_information_essentiality/task.json'
 
@@ -14,10 +14,10 @@ dataset = load_dataset('json', data_files=task_json, field='examples')
 use_gpt = False
 use_expansion = True
 use_instruction = True
-#base_model_name = "mistralai/Mistral-7B-v0.1"
-base_model_name = "mistralai/Mixtral-8x7B-v0.1"
-base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
-#base_model_name = "meta-llama/Llama-2-13b-hf"
+base_model_name = "mistralai/Mistral-7B-v0.1"
+# base_model_name = "mistralai/Mixtral-8x7B-v0.1"
+# base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+# base_model_name = "meta-llama/Llama-2-13b-hf"
 #base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 
 bnb_config = BitsAndBytesConfig(
@@ -56,7 +56,11 @@ else:
 
     if use_expansion:
         def gen_greedy(prompt, choices):
+            print("====ABOUT TO QUERY LLM===")
             r = generate.continuation(model)(prompt)
+            print("R: ", r)
+            print("====FINISHED QUERYING LLM====")
+            # exit()
             return find_answer(r, choices)
     else:
         def gen_greedy(prompt, choices):
@@ -110,26 +114,68 @@ def craft_prompt(x, cur_choices_dict):
     print('')
     return prompt
 
+def craft_consistency_prompt(x, old_answer, check_consistency_dict):
+    prompt = ""
+    if use_instruction:
+        prompt += "<s>[INST]"
+    prompt += x['input']
+    prompt += "\n\n"
+    prompt += f"Is this statement correct: '{old_answer}' \n\n"
+    prompt += "The options are one of 'Y' (Yes) or 'N' (No) as follows.\n"
+    prompt += '\n'.join([f"({k}). {v}." for k, v in check_consistency_dict.items()])
+    prompt += "\n"
+    if use_instruction:
+        prompt += "Please provide a Yes or No answer based on the correctness of the previous statement.\n"
+        prompt += "[/INST]\n"
+    else:
+        prompt += "The correct answer is ("
+    return prompt
+
 def process1(x, run=None):
     cur_choices_dict = question_choices(x)
+    # print("=======")
+    # print(cur_choices_dict)
+    # print("done")
+    # exit()
     prompt = craft_prompt(x, cur_choices_dict)
     correct_answer = answer(x)
     print('Correct answer:', correct_answer)
     given_answer = gen_greedy(prompt, cur_choices_dict.keys())
     print('Given answer:', given_answer)
     x['eval'] = given_answer == correct_answer
+
+
+    # if the model answered incorrectly, prompt it to verify its own answer with a Yes/No
+    # if it contradicts its original answer, then reprompt LLM with the original answer
+    # choice removed from the list of answers
+
+    # if given_answer != correct_answer:
+    #     # prompt LLM to verify with a Yes/No
+    #     check_consistency_dict = {"Y": "Yes", "N": "No"}
+    #     consistency_prompt = craft_consistency_prompt(x, given_answer, check_consistency_dict)
+    #     print("=====")
+    #     print(consistency_prompt)
+    #     print("==Done=")
+    #     # exit()
+
+    #     verification_response = gen_greedy(consistency_prompt, check_consistency_dict.keys())
+    #     pass
+
+
     print('Success?', x['eval'])
     print('')
     print('')
-    common_wandb.log_eval(run, x['eval'], {"correct_answer": numerize(correct_answer), "given_answer": numerize(given_answer)})
+    # common_wandb.log_eval(run, x['eval'], {"correct_answer": numerize(correct_answer), "given_answer": numerize(given_answer)})
     return x
 
 def processAll(run=None):
-    results = dataset.map(lambda x: process1(x, run))
+    # results = dataset.map(lambda x: process1(x, run))
+    results = dataset.map(lambda x: process1(x))
     solved = len(list(1 for e in results['train']['eval'] if e==1))
     total = results.num_rows['train']
     print(f"Solved {solved} out of {total}.")
 
 if __name__ == '__main__':
-    run = common_wandb.init('essential')
-    processAll(run)
+    # run = common_wandb.init('essential')
+    # processAll(run)
+    processAll()

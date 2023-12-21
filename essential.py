@@ -14,6 +14,7 @@ dataset = load_dataset('json', data_files=task_json, field='examples')
 use_gpt = False
 use_expansion = True
 use_instruction = True
+use_z3 = True
 #base_model_name = "mistralai/Mistral-7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-v0.1"
 base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
@@ -102,6 +103,8 @@ def craft_prompt(x, cur_choices_dict):
         prompt += f"What is the correct option? Think step by step.\n"
         prompt += "Give logic for and against each statement being sufficient.\n"
         prompt += "Conclude with which option is the correct one.\n"
+        if use_z3:
+            prompt += 'For each reasoning step, check your reasoning with Z3. Model your reasoning in a code block starting with "```smt". Finish the code block with `(check-sat) ;; OUT` where OUT indicates whether the output should be `sat` or `unsat`.'
         prompt += "[/INST]"
         prompt += "\n"
     else:

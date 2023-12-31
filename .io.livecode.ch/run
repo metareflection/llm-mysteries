@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+source myenv/bin/activate
+
+cat $2 $1 >cmd.py
+python cmd.py

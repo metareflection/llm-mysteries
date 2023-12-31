@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+python3 -m venv myenv
+source myenv/bin/activate
+pip install z3-solver
+
+echo OK

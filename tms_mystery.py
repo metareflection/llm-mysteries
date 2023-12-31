@@ -34,7 +34,9 @@ def solve(story_lines):
             lambda xs: Implies(Not(And(*xs[1:])), Not(xs[0])),
             [x] + all_whats)
     model = tms.maxsat()
-    return model
+    guilty = [id for id in story_suspects if model[id]]
+    assert len(guilty) == 1
+    return guilty[0]
 
 if __name__ == '__main__':
     story_lines = story.split('\n')

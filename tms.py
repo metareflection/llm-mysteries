@@ -56,7 +56,14 @@ class TMS:
         self._add_constraints(s, vars)
         assert s.check() == sat
         model = s.model()
-        return model
+        return self._model_by_label(model, vars)
+
+    def _model_by_label(self, model, vars):
+        m = {}
+        for (x,node) in self.nodes.items():
+            assert node.label not in m
+            m[node.label] = model[vars[x]]
+        return m
 
     def _create_vars(self):
         vars = {}

@@ -13,6 +13,10 @@ Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 - [mystery](mystery.py) transforms a belief graph into a MaxSAT problem to be optimized for debugging consistency;
 - [belief_graph](graph.py) elicits a belief graph for a story.
 
+## Libraries
+
+- [tms](tms.py) is a basic probabilistic Truth-Maintenance System (TMS) with a MaxSAT backend.
+
 ## Installation
 
 ### In this repo

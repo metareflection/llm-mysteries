@@ -71,7 +71,6 @@ class TMS:
             else:
                 s.add(prop)
 
-
     def _node_key(self, label):
         key = "n"+str(self.node_counter)
         self.node_counter += 1

@@ -1,3 +1,4 @@
+from math import exp
 from z3 import *
 
 class Node:
@@ -98,4 +99,19 @@ def ex1():
     tms.enable_assumption(nb)
     tms.enable_assumption(nc)
     tms.enable_assumption(nd)
+    return tms.maxsat()
+
+def ex2():
+    tms = TMS()
+    na = tms.create_node("a", probability=0.9)
+    nb = tms.create_node("b", probability=0.9)
+    nc = tms.create_node("c", probability=0.9)
+    nd = tms.create_node("d")
+    ne = tms.create_node("e")
+    nf = tms.create_node("f")
+    ng = tms.create_node("g")
+    tms.justify_node("j1", nf, [na, nb])
+    tms.justify_node("j2", ne, [nb, nc])
+    tms.justify_node("j3", ng, [na, ne])
+    tms.justify_node("j4", ng, [nd, ne])
     return tms.maxsat()

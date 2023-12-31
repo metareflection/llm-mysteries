@@ -13,6 +13,14 @@ class Constraint:
         self.nodes = nodes
         self.probability = probability
 
+def funWithNone(f, p1, p2):
+    if p1 is None:
+        return p2
+    elif p2 is None:
+        return p1
+    else:
+        return f(p1, p2)
+
 class TMS:
     def __init__(self):
         self.nodes = {}
@@ -21,15 +29,16 @@ class TMS:
         self.constraint_counter = 0
 
     def node_by_label(self, label):
-        for (x,node) in self.nodes.items():
-            if node.label == label:
-                return x
+        if label in self.nodes:
+            return label
         return self.create_node(label, probability=0.0)
 
     def create_node(self, label, probability=None):
-        key = self._node_key(label)
-        self.nodes[key] = Node(label, probability)
-        return key
+        if label in self.nodes:
+            old = self.nodes[label]
+            probability = funWithNone(max, probability, old.probability)
+        self.nodes[label] = Node(label, probability)
+        return label
 
     def justify_node(self, label, conclusion, premises, probability=None):
         return self.add_constraint(
@@ -39,9 +48,9 @@ class TMS:
             probability)
 
     def add_constraint(self, label, relation, nodes, probability=None):
-        key = self._constraint_key(label)
-        self.constraints[key] = Constraint(label, relation, nodes, probability)
-        return key
+        assert label not in self.constraints
+        self.constraints[label] = Constraint(label, relation, nodes, probability)
+        return label
 
     def enable_assumption(self, node, value=True, probability=None):
         return self.add_constraint(
@@ -94,16 +103,6 @@ class TMS:
             else:
                 s.add(prop)
 
-    def _node_key(self, label):
-        key = "n"+str(self.node_counter)
-        self.node_counter += 1
-        return key
-
-    def _constraint_key(self, label):
-        key = "c"+str(self.constraint_counter)
-        self.constraint_counter += 1
-        return key
-
 def ex1():
     tms = TMS()
     na = tms.create_node("a")
@@ -155,3 +154,8 @@ def ex3():
     tms.retract_node(ne)
     r2 = tms.maxsat()
     return (r1, r2)
+
+if __name__ == '__main__':
+    print(ex1())
+    print(ex2())
+    print(ex3())

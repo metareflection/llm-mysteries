@@ -23,7 +23,9 @@ Maurice Eades has opportunity: he is a servant.
 Maurice Eades has no motive: he is trusted!!!!!.
 """.strip()
 
-re_line = re.compile(r'(?P<id>\w+ \w+) has ((?P<neg>no) )?(?P<what>mean|opportunity|motive): (.*?)(?P<bangs>!*).')
+story_suspects = ['Fiona Duncan', 'Colonel Barrow', 'Abby Grant', 'Harold Duncan', 'Maurice Eades']
+
+re_line = re.compile(r'(?P<id>\w+( \w+)?) has ((?P<neg>no) )?(?P<what>mean|opportunity|motive): (.*?)(?P<bangs>!*).')
 
 def get_init(d, key):
     if key not in d:
@@ -96,6 +98,8 @@ def show_interpretation(model, vars, suspects):
 
 def parse(line):
     m = re_line.fullmatch(line)
+    if m is None:
+        print(line)
     assert m is not None
     id = m['id']
     what = m['what']
@@ -121,7 +125,4 @@ if __name__ == '__main__':
 
     if False:
         import belief_graph
-        print(belief_graph.solve(
-            story,
-            ['Fiona Duncan', 'Colonel Barrow', 'Abby Grant', 'Harold Duncan', 'Maurice Eades']
-        ))
+        print(belief_graph.solve(story, story_suspects))

@@ -73,7 +73,7 @@ class TMS:
 
     def _add_constraints(self, s, vars):
         def to_vars(xs):
-            return list(map(lambda x: vars[x], xs))
+            return [vars[x] for x in xs]
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 v = vars[x]

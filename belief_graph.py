@@ -1,5 +1,6 @@
 from extractor import model, base_model_name
 from sequence_probabilities import make_greedy_tracker
+import outlines.text.generate as generate
 from outlines.text.generate.regex import choice
 from transformers import AutoTokenizer
 from math import exp
@@ -20,18 +21,20 @@ belief_generator = make_greedy_tracker(
     mask_token_ids
 )
 
+postfix = ': Answer exactly one of: True or False.'
 def belief_probability(prompt):
-    question = prompt[0:prompt.index('?')+1]
+    question = prompt[0:prompt.index(postfix)]
+    instr_prompt = f'<s>[INST]{prompt}[/INST] '
     print(question)
+    #print('Unconstrained answer:', generate.continuation(model)(instr_prompt))
     belief_generator.sequence_log_prob = 0.0
-    val = belief_generator(f'<s>[INST]{prompt}[/INST] ')
+    val = belief_generator(instr_prompt)
     val = True if val=='True' else False
     confidence = exp(belief_generator.sequence_log_prob)
     print(f"{val} ({confidence})")
     return (val, confidence)
 
 def create_prompt(story, id, neg, what=None):
-    postfix = ': True or False?'
     if what is None:
         prompt = f"{id} is{' not' if neg else ''} guilty"
     else:

@@ -3,8 +3,9 @@ from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer
 
 #base_model_name = "mistralai/Mistral-7B-v0.1"
 #base_model_name = "meta-llama/Llama-2-70b-hf"
-base_model_name = "meta-llama/Llama-2-70b-chat-hf"
+#base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 #base_model_name = "lmsys/vicuna-33b-v1.3"
+base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,

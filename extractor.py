@@ -1,4 +1,3 @@
-from markers import postambule
 import outlines.text.generate.sample as sample
 import outlines.text.generate as generate
 import outlines.models as models
@@ -8,9 +7,9 @@ from transformers import BitsAndBytesConfig
 #base_model_name = "mistralai/Mistral-7B-v0.1"
 #base_model_name = "meta-llama/Llama-2-70b-hf"
 #base_model_name = "meta-llama/Llama-2-13b-hf"
-#base_model_name = "meta-llama/Llama-2-13b-chat-hf"
+base_model_name = "meta-llama/Llama-2-13b-chat-hf"
 #base_model_name = "meta-llama/Llama-2-70b-chat-hf"
-base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+#base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
 #model = models.transformers(base_model_name, device="cuda")
 bnb_config = BitsAndBytesConfig(
@@ -31,11 +30,10 @@ model = models.transformers(
 )
 
 def extract(r, choices):
-    i = r.index(postambule)
-    prompt = r[i+len(postambule):]
-    print(prompt)
+    i = r.index("[/INST]")
+    prompt = r[i+len("[/INST]"):]
+    print(f"<s>[INST]Who is the culprit based on this: {prompt}. Answer exactly one of {', '.join(choices)}.[/INST]")
     print("The suspects are "+",".join(choices))
-    prompt += "\nSo as explained, the culprit is"
     return gen(prompt, choices)
 
 def gen(prompt, choices):

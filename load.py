@@ -20,7 +20,7 @@ def culprit(x):
 
 def generateCase(generate, extract, x):
     print(f"## {x['comment']}")
-    r = generate(f"{preambule}\n{x['input']}\n{postambule}")
+    r = generate(f"<s>[INST]{preambule}\n{x['input']}\n{postambule}[/INST]\n")
     s = extract(r, suspects(x))
     print(f"The culprit is {s}.")
     print(f"\nIn fact, it is {culprit(x)}.")

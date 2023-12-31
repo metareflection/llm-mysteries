@@ -20,6 +20,12 @@ class TMS:
         self.node_counter = 0
         self.constraint_counter = 0
 
+    def node_by_label(self, label):
+        for (x,node) in self.nodes.items():
+            if node.label == label:
+                return x
+        return self.create_node(label, probability=0.0)
+
     def create_node(self, label, probability=None):
         key = self._node_key(label)
         self.nodes[key] = Node(label, probability)
@@ -28,7 +34,7 @@ class TMS:
     def justify_node(self, label, conclusion, premises, probability=None):
         return self.add_constraint(
             label,
-            lambda xs: Implies(And(xs[1:]), xs[0]),
+            lambda xs: Implies(And(*xs[1:]), xs[0]),
             [conclusion] + premises,
             probability)
 
@@ -62,12 +68,12 @@ class TMS:
         def to_vars(xs):
             return list(map(lambda x: vars[x], xs))
         for (x,node) in self.nodes.items():
-            if node.probability:
+            if node.probability is not None:
                 v = vars[x]
                 s.add_soft(Not(v), exp(-node.probability))
         for (x,constraint) in self.constraints.items():
             prop = constraint.relation(to_vars(constraint.nodes))
-            if constraint.probability:
+            if constraint.probability is not None:
                 s.add_soft(prop, exp(-constraint.probability))
             else:
                 s.add(prop)

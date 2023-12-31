@@ -50,6 +50,15 @@ class TMS:
             [node],
             probability)
 
+    def retract_node(self, key):
+        node = self.nodes.pop(key)
+        for (k,constraint) in list(self.constraints.items()):
+            if key in constraint.nodes:
+                self.retract_constraint(k)
+
+    def retract_constraint(self, key):
+        del self.constraints[key]
+    
     def maxsat(self):
         vars = self._create_vars()
         s = Optimize()
@@ -128,3 +137,21 @@ def ex2():
     tms.justify_node("j3", ng, [na, ne])
     tms.justify_node("j4", ng, [nd, ne])
     return tms.maxsat()
+
+def ex3():
+    tms = TMS()
+    na = tms.create_node("a", probability=0.9)
+    nb = tms.create_node("b", probability=0.9)
+    nc = tms.create_node("c", probability=0.9)
+    nd = tms.create_node("d")
+    ne = tms.create_node("e")
+    nf = tms.create_node("f")
+    ng = tms.create_node("g")
+    tms.justify_node("j1", nf, [na, nb])
+    tms.justify_node("j2", ne, [nb, nc])
+    tms.justify_node("j3", ng, [na, ne])
+    tms.justify_node("j4", ng, [nd, ne])
+    r1 = tms.maxsat()
+    tms.retract_node(ne)
+    r2 = tms.maxsat()
+    return (r1, r2)

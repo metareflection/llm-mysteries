@@ -53,8 +53,11 @@ class TMS:
         return label
 
     def enable_assumption(self, node, value=True, probability=None):
+        key = "assumption "+node
+        if key in self.constraints:
+            self.retract_constraint(key)
         return self.add_constraint(
-            "assumption "+node,
+            key,
             lambda xs: xs[0] if value else Not(xs[0]),
             [node],
             probability)
@@ -174,9 +177,23 @@ def ex5():
   assert model == {"a": True, "b": False, "c": True}
   return model
 
+def ex6():
+    tms = TMS()
+    na = tms.create_node("a")
+    nb = tms.create_node("b")
+    nc = tms.create_node("c")
+    tms.justify_node("j1", nc, [na, nb])
+    tms.enable_assumption(na)
+    tms.enable_assumption(nb)
+    r1 = tms.maxsat()
+    tms.enable_assumption(na, value=False)
+    r2 = tms.maxsat()
+    return (r1, r2)
+
 if __name__ == '__main__':
     print(ex1())
     print(ex2())
     print(ex3())
     print(ex4())
     print(ex5())
+    print(ex6())

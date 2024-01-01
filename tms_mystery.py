@@ -14,7 +14,7 @@ def Xors(*xs):
         clauses.append(And(*cs))
     return Or(*clauses)
 
-def solve(story_lines):
+def solve_all(story_lines):
     tms = TMS()
     whats = []
     story_suspects = []
@@ -48,6 +48,12 @@ def guilty_party(model, story_suspects):
     guilty = [id for id in story_suspects if model[id]]
     assert len(guilty) == 1
     return guilty[0]
+
+def solve(story_lines):
+    rs = solve_all(story_lines)
+    if len(rs) > 1:
+        print("WARNING: multiple top results", rs)
+    return next(iter(rs))
 
 if __name__ == '__main__':
     story_lines = story.split('\n')

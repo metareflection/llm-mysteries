@@ -98,13 +98,23 @@ class TMS:
     def retract_constraint(self, key):
         del self.constraints[key]
     
-    def maxsat(self):
+    def maxsats(self):
         vars = self._create_vars()
         s = WCNF()
         self._add_constraints(s, vars)
         with RC2(s) as rc2:
+            c = None
+            rs = []
             for model in rc2.enumerate():
-                return self._model_by_label(model)
+                if c is None:
+                    c = rc2.cost
+                if c == rc2.cost:
+                    rs.append(self._model_by_label(model))
+                else:
+                    return rs
+
+    def maxsat(self):
+        return self.maxsats()[0]
 
     def _model_by_label(self, model):
         m = {}

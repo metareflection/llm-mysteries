@@ -41,7 +41,10 @@ def solve(story_lines):
             f"not all whats implies not guilty for {id}",
             lambda xs: Implies(Not(And(*xs[1:])), Not(xs[0])),
             [x] + all_whats)
-    model = tms.maxsat()
+    models = tms.maxsats()
+    return set([guilty_party(model, story_suspects) for model in models])
+
+def guilty_party(model, story_suspects):
     guilty = [id for id in story_suspects if model[id]]
     assert len(guilty) == 1
     return guilty[0]

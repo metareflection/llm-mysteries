@@ -167,7 +167,7 @@ def ex4():
 def ex5():
   tms = TMS()
   na = tms.create_node("a", probability=0.9)
-  nb = tms.create_node("b", probability=0.1)
+  nb = tms.create_node("b", probability=0.4)
   nc = tms.create_node("c")
   tms.add_constraint("j1", lambda xs: Implies(And(xs[0], Not(xs[1])), xs[2]), [na, nb, nc], probability=0.9)
   model = tms.maxsat()

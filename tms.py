@@ -99,7 +99,7 @@ class TMS:
         for (x,constraint) in self.constraints.items():
             prop = constraint.relation(to_vars(constraint.nodes))
             if constraint.probability is not None:
-                s.add_soft(prop, exp(-constraint.probability))
+                s.add_soft(Not(prop), exp(-constraint.probability))
             else:
                 s.add(prop)
 

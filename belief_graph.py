@@ -6,6 +6,7 @@ from transformers import AutoTokenizer
 from math import exp
 from load import dataset, suspects, culprit, tagline, story_text
 import mystery
+import tms_mystery
 import common_wandb
 
 tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
@@ -49,11 +50,11 @@ def create_story_lines(story, suspect_list):
             #for neg in [True, False]:
             (val, confidence) = belief_probability(create_prompt(story, suspect, False, what))
             lines.append((suspect, what, val, confidence))
-            lines.append((suspect, what, not val, 1.0-confidence))
+            #lines.append((suspect, what, not val, 1.0-confidence))
     return lines
 
 def solve(story, suspect_list):
-    return mystery.solve(create_story_lines(story, suspect_list))
+    return tms_mystery.solve(create_story_lines(story, suspect_list))
 
 def processCase(x, run=None):
     print(f"## {tagline(x)}")

@@ -27,3 +27,4 @@ Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 - `pip install git+https://github.com/huggingface/transformers.git`
 - `pip install "outlines @ git+https://github.com/outlines-dev/outlines.git@main"`
 - `pip install z3-solver`
+- `pip install python-sat`

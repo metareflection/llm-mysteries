@@ -4,46 +4,121 @@
 
 {% block content %}
 
-<div class="live" id="ex">
+<div class="live" id="ex-tms">
 from tms import TMS
 from z3 import *
 
 def ex1():
-  tms = TMS()
-  na = tms.create_node("a")
-  nb = tms.create_node("b")
-  nc = tms.create_node("c")
-  nd = tms.create_node("d")
-  ne = tms.create_node("e")
-  tms.justify_node("j1", ne, [na, nb])
-  tms.justify_node("j2", ne, [na, nc])
-  tms.enable_assumption(na)
-  tms.enable_assumption(nb)
-  print(tms.maxsat())
-ex1()
+    tms = TMS()
+    na = tms.create_node("a")
+    nb = tms.create_node("b")
+    nc = tms.create_node("c")
+    nd = tms.create_node("d")
+    ne = tms.create_node("e")
+    nf = tms.create_node("f")
+    ng = tms.create_node("g")
+    tms.justify_node("j1", nf, [na, nb])
+    tms.justify_node("j2", ne, [nb, nc])
+    tms.justify_node("j3", ng, [na, ne])
+    tms.justify_node("j4", ng, [nd, ne])
+    tms.enable_assumption(na)
+    tms.enable_assumption(nb)
+    tms.enable_assumption(nc)
+    tms.enable_assumption(nd)
+    return tms.maxsat()
+print(ex1())
 
-# can use probabilities
 def ex2():
-  tms = TMS()
-  na = tms.create_node("a", probability=0.9)
-  nb = tms.create_node("b", probability=0.6)
-  nc = tms.create_node("c")
-  nd = tms.create_node("d")
-  ne = tms.create_node("e")
-  tms.justify_node("j1", ne, [na, nb], probability=0.7)
-  tms.justify_node("j2", ne, [na, nc])
-  print(tms.maxsat())
-ex2()
+    tms = TMS()
+    na = tms.create_node("a", probability=0.9)
+    nb = tms.create_node("b", probability=0.9)
+    nc = tms.create_node("c", probability=0.9)
+    nd = tms.create_node("d")
+    ne = tms.create_node("e")
+    nf = tms.create_node("f")
+    ng = tms.create_node("g")
+    tms.justify_node("j1", nf, [na, nb])
+    tms.justify_node("j2", ne, [nb, nc])
+    tms.justify_node("j3", ng, [na, ne])
+    tms.justify_node("j4", ng, [nd, ne])
+    return tms.maxsat()
+print(ex2())
 
-# can use arbitrary constraints
 def ex3():
+    tms = TMS()
+    na = tms.create_node("a", probability=0.9)
+    nb = tms.create_node("b", probability=0.9)
+    nc = tms.create_node("c", probability=0.9)
+    nd = tms.create_node("d")
+    ne = tms.create_node("e")
+    nf = tms.create_node("f")
+    ng = tms.create_node("g")
+    tms.justify_node("j1", nf, [na, nb])
+    tms.justify_node("j2", ne, [nb, nc])
+    tms.justify_node("j3", ng, [na, ne])
+    tms.justify_node("j4", ng, [nd, ne])
+    r1 = tms.maxsat()
+    tms.retract_node(ne)
+    r2 = tms.maxsat()
+    return (r1, r2)
+print(ex3())
+
+def ex4():
   tms = TMS()
   na = tms.create_node("a", probability=0.9)
-  nb = tms.create_node("b", probability=0.6)
+  model = tms.maxsat()
+  assert model == {"a": True}
+  return model
+print(ex4())
+
+def ex5():
+  tms = TMS()
+  na = tms.create_node("a", probability=0.9)
+  nb = tms.create_node("b", probability=0.4)
   nc = tms.create_node("c")
-  tms.add_constraint("j1", lambda xs: Implies(And(xs[0], Not(xs[1])), xs[2]), [na, nb, nc], probability=0.7)
-  print(tms.maxsat())
-ex3()
+  tms.add_constraint("j1", lambda xs: Implies(And(xs[0], Not(xs[1])), xs[2]), [na, nb, nc], probability=0.9)
+  model = tms.maxsat()
+  assert model == {"a": True, "b": False, "c": True}
+  return model
+print(ex5())
+
+def ex6():
+    tms = TMS()
+    na = tms.create_node("a")
+    nb = tms.create_node("b")
+    nc = tms.create_node("c")
+    tms.justify_node("j1", nc, [na, nb])
+    tms.enable_assumption(na)
+    tms.enable_assumption(nb)
+    r1 = tms.maxsat()
+    tms.enable_assumption(na, value=False)
+    r2 = tms.maxsat()
+    return (r1, r2)
+print(ex6())
+</div>
+
+<div class="live" id="ex-mystery">
+  from llm_mystery import solve
+
+  story_lines = [
+  ('Fiona Duncan', 'mean', True, 0.2),
+  ('Fiona Duncan', 'opportunity', True, 0.4),
+  ('Fiona Duncan', 'motive', False, 0.0),
+  ('Colonel Barrow', 'mean', True, 0.4),
+  ('Colonel Barrow', 'mean', False, 0.6),
+  ('Colonel Barrow', 'opportunity', True, 0.4),
+  ('Colonel Barrow', 'motive', False, 0.6),
+  ('Abby Grant', 'mean', False, 0.6),
+  ('Abby Grant', 'opportunity', True, 0.2),
+  ('Abby Grant', 'motive', True, 0.4),
+  ('Harold Duncan', 'mean', False, 1.0),
+  ('Harold Duncan', 'opportunity', False, 1.0),
+  ('Harold Duncan', 'motive', False, 0.2),
+  ('Maurice Eades', 'mean', True, 0.0),
+  ('Maurice Eades', 'opportunity', True, 0.0),
+  ('Maurice Eades', 'motive', False, 1.0)]
+
+  print(solve(story_lines))
 </div>
 
 {% endblock %}

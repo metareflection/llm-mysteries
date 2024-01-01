@@ -138,7 +138,7 @@ class TMS:
                 s.append(c, weight)
         def add_soft(x, p):
             add_clause(Not(x), exp(-p))
-            add_clause(x, exp(-(1-p)))
+            #add_clause(x, exp(-(1-p)))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 add_soft(vars[x], node.probability)

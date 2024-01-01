@@ -1,18 +1,11 @@
-from tms import TMS
+from tms_rc2 import TMS_RC2 as TMS
+from tms_rc2 import Xors
 from z3 import *
 
 from mystery import story, parse
 
 def label(id, what):
     return f"{id}-{what}"
-
-def Xors(*xs):
-    clauses = []
-    for i in range(len(xs)):
-        cs = [Not(x) for x in xs]
-        cs[i] = xs[i]
-        clauses.append(And(*cs))
-    return Or(*clauses)
 
 def solve_all(story_lines):
     tms = TMS()

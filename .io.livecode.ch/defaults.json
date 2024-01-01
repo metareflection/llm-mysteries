@@ -1,3 +1,4 @@
 {
-  "language" : "python"
+  "language" : "python",
+  "clone_recursive" : false
 }

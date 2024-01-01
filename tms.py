@@ -92,14 +92,16 @@ class TMS:
     def _add_constraints(self, s, vars):
         def to_vars(xs):
             return [vars[x] for x in xs]
+        def add_soft(x, p):
+            s.add_soft(Not(x), exp(-p))
+            s.add_soft(x, exp(-(1-p)))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
-                v = vars[x]
-                s.add_soft(Not(v), exp(-node.probability))
+                add_soft(vars[x], node.probability)
         for (x,constraint) in self.constraints.items():
             prop = constraint.relation(to_vars(constraint.nodes))
             if constraint.probability is not None:
-                s.add_soft(Not(prop), exp(-constraint.probability))
+                add_soft(prop, constraint.probability)
             else:
                 s.add(prop)
 
@@ -155,7 +157,26 @@ def ex3():
     r2 = tms.maxsat()
     return (r1, r2)
 
+def ex4():
+  tms = TMS()
+  na = tms.create_node("a", probability=0.9)
+  model = tms.maxsat()
+  assert model == {"a": True}
+  return model
+
+def ex5():
+  tms = TMS()
+  na = tms.create_node("a", probability=0.9)
+  nb = tms.create_node("b", probability=0.1)
+  nc = tms.create_node("c")
+  tms.add_constraint("j1", lambda xs: Implies(And(xs[0], Not(xs[1])), xs[2]), [na, nb, nc], probability=0.9)
+  model = tms.maxsat()
+  assert model == {"a": True, "b": False, "c": True}
+  return model
+
 if __name__ == '__main__':
     print(ex1())
     print(ex2())
     print(ex3())
+    print(ex4())
+    print(ex5())

@@ -88,8 +88,10 @@ class TMS_Base:
         def to_vars(xs):
             return [vars[x] for x in xs]
         def add_soft(x, p):
-            self._add_clause(s, vars, x, exp(-(1.0-p)))
-            self._add_clause(s, vars, Not(x), exp(-p))
+            if p > 0.5:
+                self._add_clause(s, vars, x, exp(-(1.0-p)))
+            else:
+                self._add_clause(s, vars, Not(x), exp(-p))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 add_soft(vars[x], node.probability)

@@ -1,16 +1,22 @@
 from tms import TMS
 from z3 import *
 
-from mystery import whats, story, story_suspects, parse
+from mystery import story, parse
 
 def label(id, what, val):
     return f"{id}-{what}-{val}"
 
 def solve(story_lines):
     tms = TMS()
+    whats = []
+    story_suspects = []
     for line in story_lines:
         (id, what, val, confidence) = line
         tms.create_node(label(id, what, val), probability=confidence)
+        if what not in whats:
+            whats.append(what)
+        if id not in story_suspects:
+            story_suspects.append(id)
     suspect_nodes = [tms.create_node(id) for id in story_suspects]
     tms.add_constraint(
         "exactly one culprit",

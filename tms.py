@@ -25,8 +25,6 @@ class TMS:
     def __init__(self):
         self.nodes = {}
         self.constraints = {}
-        self.node_counter = 0
-        self.constraint_counter = 0
 
     def node_by_label(self, label):
         if label in self.nodes:

@@ -70,8 +70,10 @@ def add_soft_constraints(s, vars, suspects):
     for (id,d) in suspects.items():
         for what in whats:
            v = vars[what_var(id, what)]
-           s.add_soft(Not(v), exp(-d[what][True]))
-           s.add_soft(v, exp(-d[what][False]))
+           if d[what][True] > 0.0:
+               s.add_soft(Not(v), exp(-d[what][True]))
+           elif d[what][False] > 0.0:
+               s.add_soft(Not(v), exp(-(1-d[what][False])))
 
 def add_hard_constraints(s, vars, suspects):
     xor_expr = Sum([If(vars[suspect_var(id)], 1, 0) for id in suspects.keys()]) == 1

@@ -21,7 +21,7 @@ def funWithNone(f, p1, p2):
     else:
         return f(p1, p2)
 
-class TMS:
+class TMS_Base:
     def __init__(self):
         self.nodes = {}
         self.constraints = {}
@@ -69,20 +69,14 @@ class TMS:
     def retract_constraint(self, key):
         del self.constraints[key]
     
-    def maxsat(self):
+    def maxsats(self):
         vars = self._create_vars()
-        s = Optimize()
+        s = self._init_optimizer()
         self._add_constraints(s, vars)
-        assert s.check() == sat
-        model = s.model()
-        return self._model_by_label(model, vars)
+        return self._find_models(s, vars)
 
-    def _model_by_label(self, model, vars):
-        m = {}
-        for (x,node) in self.nodes.items():
-            assert node.label not in m
-            m[node.label] = model[vars[x]]
-        return m
+    def maxsat(self):
+        return self.maxsats()[0]
 
     def _create_vars(self):
         vars = {}
@@ -94,8 +88,10 @@ class TMS:
         def to_vars(xs):
             return [vars[x] for x in xs]
         def add_soft(x, p):
-            s.add_soft(Not(x), exp(-p))
-            #s.add_soft(x, exp(-(1-p)))
+            if p > 0.5:
+                self._add_clause(s, vars, x, exp(-(1.0-p)))
+            else:
+                self._add_clause(s, vars, Not(x), exp(-p))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 add_soft(vars[x], node.probability)
@@ -104,94 +100,5 @@ class TMS:
             if constraint.probability is not None:
                 add_soft(prop, constraint.probability)
             else:
-                s.add(prop)
+                self._add_clause(s, vars, prop)
 
-def ex1():
-    tms = TMS()
-    na = tms.create_node("a")
-    nb = tms.create_node("b")
-    nc = tms.create_node("c")
-    nd = tms.create_node("d")
-    ne = tms.create_node("e")
-    nf = tms.create_node("f")
-    ng = tms.create_node("g")
-    tms.justify_node("j1", nf, [na, nb])
-    tms.justify_node("j2", ne, [nb, nc])
-    tms.justify_node("j3", ng, [na, ne])
-    tms.justify_node("j4", ng, [nd, ne])
-    tms.enable_assumption(na)
-    tms.enable_assumption(nb)
-    tms.enable_assumption(nc)
-    tms.enable_assumption(nd)
-    return tms.maxsat()
-
-def ex2():
-    tms = TMS()
-    na = tms.create_node("a", probability=0.9)
-    nb = tms.create_node("b", probability=0.9)
-    nc = tms.create_node("c", probability=0.9)
-    nd = tms.create_node("d")
-    ne = tms.create_node("e")
-    nf = tms.create_node("f")
-    ng = tms.create_node("g")
-    tms.justify_node("j1", nf, [na, nb])
-    tms.justify_node("j2", ne, [nb, nc])
-    tms.justify_node("j3", ng, [na, ne])
-    tms.justify_node("j4", ng, [nd, ne])
-    return tms.maxsat()
-
-def ex3():
-    tms = TMS()
-    na = tms.create_node("a", probability=0.9)
-    nb = tms.create_node("b", probability=0.9)
-    nc = tms.create_node("c", probability=0.9)
-    nd = tms.create_node("d")
-    ne = tms.create_node("e")
-    nf = tms.create_node("f")
-    ng = tms.create_node("g")
-    tms.justify_node("j1", nf, [na, nb])
-    tms.justify_node("j2", ne, [nb, nc])
-    tms.justify_node("j3", ng, [na, ne])
-    tms.justify_node("j4", ng, [nd, ne])
-    r1 = tms.maxsat()
-    tms.retract_node(ne)
-    r2 = tms.maxsat()
-    return (r1, r2)
-
-def ex4():
-  tms = TMS()
-  na = tms.create_node("a", probability=0.9)
-  model = tms.maxsat()
-  assert model == {"a": True}
-  return model
-
-def ex5():
-  tms = TMS()
-  na = tms.create_node("a", probability=0.9)
-  nb = tms.create_node("b", probability=0.4)
-  nc = tms.create_node("c")
-  tms.add_constraint("j1", lambda xs: Implies(And(xs[0], Not(xs[1])), xs[2]), [na, nb, nc], probability=0.9)
-  model = tms.maxsat()
-  assert model == {"a": True, "b": False, "c": True}
-  return model
-
-def ex6():
-    tms = TMS()
-    na = tms.create_node("a")
-    nb = tms.create_node("b")
-    nc = tms.create_node("c")
-    tms.justify_node("j1", nc, [na, nb])
-    tms.enable_assumption(na)
-    tms.enable_assumption(nb)
-    r1 = tms.maxsat()
-    tms.enable_assumption(na, value=False)
-    r2 = tms.maxsat()
-    return (r1, r2)
-
-if __name__ == '__main__':
-    print(ex1())
-    print(ex2())
-    print(ex3())
-    print(ex4())
-    print(ex5())
-    print(ex6())

@@ -1,4 +1,7 @@
-from tms import TMS
+from tms_rc2 import TMS_RC2 as TMS
+from tms_rc2 import Xors
+#from tms_z3 import TMS_Z3 as TMS
+#from tms_z3 import Xors
 from z3 import *
 
 from mystery import story, parse
@@ -6,7 +9,7 @@ from mystery import story, parse
 def label(id, what):
     return f"{id}-{what}"
 
-def solve(story_lines):
+def solve_all(story_lines):
     tms = TMS()
     whats = []
     story_suspects = []
@@ -21,7 +24,7 @@ def solve(story_lines):
     suspect_nodes = [tms.create_node(id) for id in story_suspects]
     tms.add_constraint(
         "exactly one culprit",
-        lambda xs: Sum([If(x, 1, 0) for x in xs]) == 1,
+        lambda xs: Xors(*xs),
         suspect_nodes)
     for (id,x) in zip(story_suspects, suspect_nodes):
         all_whats = [tms.node_by_label(label(id, what)) for what in whats]
@@ -33,10 +36,19 @@ def solve(story_lines):
             f"not all whats implies not guilty for {id}",
             lambda xs: Implies(Not(And(*xs[1:])), Not(xs[0])),
             [x] + all_whats)
-    model = tms.maxsat()
+    models = tms.maxsats()
+    return set([guilty_party(model, story_suspects) for model in models])
+
+def guilty_party(model, story_suspects):
     guilty = [id for id in story_suspects if model[id]]
     assert len(guilty) == 1
     return guilty[0]
+
+def solve(story_lines):
+    rs = solve_all(story_lines)
+    if len(rs) > 1:
+        print("WARNING: multiple top results", rs)
+    return next(iter(rs))
 
 if __name__ == '__main__':
     story_lines = story.split('\n')

@@ -95,7 +95,7 @@ class TMS:
             return [vars[x] for x in xs]
         def add_soft(x, p):
             s.add_soft(Not(x), exp(-p))
-            s.add_soft(x, exp(-(1-p)))
+            #s.add_soft(x, exp(-(1-p)))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 add_soft(vars[x], node.probability)

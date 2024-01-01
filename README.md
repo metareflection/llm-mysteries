@@ -11,7 +11,7 @@
 ### Attempt 3
 Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 - [mystery](mystery.py) transforms a belief graph into a MaxSAT problem to be optimized for debugging consistency;
-- [belief_graph](graph.py) elicits a belief graph for a story.
+- [belief_graph](belief_graph.py) elicits a belief graph for a story.
 
 ## Libraries
 

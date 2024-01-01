@@ -5,7 +5,45 @@
 {% block content %}
 
 <div class="live" id="ex">
+from tms import TMS
+from z3 import *
 
+def ex1():
+  tms = TMS()
+  na = tms.create_node("a")
+  nb = tms.create_node("b")
+  nc = tms.create_node("c")
+  nd = tms.create_node("d")
+  ne = tms.create_node("e")
+  tms.justify_node("j1", ne, [na, nb])
+  tms.justify_node("j2", ne, [na, nc])
+  tms.enable_assumption(na)
+  tms.enable_assumption(nb)
+  print(tms.maxsat())
+ex1()
+
+# can use probabilities
+def ex2():
+  tms = TMS()
+  na = tms.create_node("a", probability=0.9)
+  nb = tms.create_node("b", probability=0.6)
+  nc = tms.create_node("c")
+  nd = tms.create_node("d")
+  ne = tms.create_node("e")
+  tms.justify_node("j1", ne, [na, nb], probability=0.7)
+  tms.justify_node("j2", ne, [na, nc])
+  print(tms.maxsat())
+ex2()
+
+# can use arbitrary constraints
+def ex3():
+  tms = TMS()
+  na = tms.create_node("a", probability=0.9)
+  nb = tms.create_node("b", probability=0.6)
+  nc = tms.create_node("c")
+  tms.add_constraint("j1", lambda xs: Implies(And(xs[0], Not(xs[1])), xs[2]), [na, nb, nc], probability=0.7)
+  print(tms.maxsat())
+ex3()
 </div>
 
 {% endblock %}

@@ -4,5 +4,6 @@ set -e
 python3 -m venv myenv
 source myenv/bin/activate
 pip install z3-solver
+pip install python-sat
 
 echo OK

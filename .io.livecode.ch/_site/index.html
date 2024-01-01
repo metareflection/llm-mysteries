@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="live" id="ex-tms">
-from tms import TMS
+from tms_rc2 import TMS_RC2 as TMS
 from z3 import *
 
 def ex1():
@@ -101,22 +101,23 @@ print(ex6())
 from tms_mystery import solve
 
 story_lines = [
-  ('Fiona Duncan', 'mean', True, 0.2),
-  ('Fiona Duncan', 'opportunity', True, 0.4),
-  ('Fiona Duncan', 'motive', False, 0.0),
-  ('Colonel Barrow', 'mean', True, 0.4),
-  ('Colonel Barrow', 'mean', False, 0.6),
-  ('Colonel Barrow', 'opportunity', True, 0.4),
-  ('Colonel Barrow', 'motive', False, 0.6),
-  ('Abby Grant', 'mean', False, 0.6),
-  ('Abby Grant', 'opportunity', True, 0.2),
-  ('Abby Grant', 'motive', True, 0.4),
+  ('Fiona Duncan', 'mean', True, 0.6),
+  ('Fiona Duncan', 'opportunity', True, 0.7),
+  ('Fiona Duncan', 'motive', False, 0.5),
+  ('Colonel Barrow', 'mean', True, 0.7),
+  ('Colonel Barrow', 'mean', False, 0.8),
+  ('Colonel Barrow', 'opportunity', True, 0.7),
+  ('Colonel Barrow', 'motive', False, 0.8),
+  ('Abby Grant', 'mean', False, 0.8),
+  ('Abby Grant', 'opportunity', True, 0.6),
+  ('Abby Grant', 'motive', True, 0.7),
   ('Harold Duncan', 'mean', False, 1.0),
   ('Harold Duncan', 'opportunity', False, 1.0),
-  ('Harold Duncan', 'motive', False, 0.2),
-  ('Maurice Eades', 'mean', True, 0.0),
-  ('Maurice Eades', 'opportunity', True, 0.0),
-  ('Maurice Eades', 'motive', False, 1.0)]
+  ('Harold Duncan', 'motive', False, 0.6),
+  ('Maurice Eades', 'mean', True, 0.5),
+  ('Maurice Eades', 'opportunity', True, 0.5),
+  ('Maurice Eades', 'motive', False, 1.0)
+]
 
 print(solve(story_lines))
 </div>

@@ -16,6 +16,8 @@ Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 ## Libraries
 
 - [tms](tms.py) is a basic probabilistic Truth-Maintenance System (TMS) with a MaxSAT backend.
+  - [tms_z3](tms_z3.py) is the Z3 backend.
+  - [tms_rc2](tms_rc2.py) is the [RC2](https://pysathq.github.io/docs/html/api/examples/rc2.html) backend. 
 
 ## Installation
 

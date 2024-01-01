@@ -6,6 +6,14 @@ from mystery import story, parse
 def label(id, what):
     return f"{id}-{what}"
 
+def Xors(*xs):
+    clauses = []
+    for i in range(len(xs)):
+        cs = [Not(x) for x in xs]
+        cs[i] = xs[i]
+        clauses.append(And(*cs))
+    return Or(*clauses)
+
 def solve(story_lines):
     tms = TMS()
     whats = []
@@ -21,7 +29,7 @@ def solve(story_lines):
     suspect_nodes = [tms.create_node(id) for id in story_suspects]
     tms.add_constraint(
         "exactly one culprit",
-        lambda xs: Sum([If(x, 1, 0) for x in xs]) == 1,
+        lambda xs: Xors(*xs),
         suspect_nodes)
     for (id,x) in zip(story_suspects, suspect_nodes):
         all_whats = [tms.node_by_label(label(id, what)) for what in whats]

@@ -1,5 +1,34 @@
 from math import exp
 from z3 import *
+from pysat.examples.rc2 import RC2
+from pysat.formula import WCNF
+
+def convert_to_cnf(formula, vars):
+    cnf_tactic = Tactic('tseitin-cnf')
+    cnf_formula = cnf_tactic(formula)
+    assert len(cnf_formula) == 1
+    return cnf_to_clauses(cnf_formula[0], vars)
+
+def cnf_to_clauses(cs, vars):
+    clauses = []
+    for c in cs:
+        if is_or(c):
+            clauses.append([get_literal(x, vars) for x in c.children()])
+        else:
+            clauses.append([get_literal(c, vars)])
+    return clauses
+
+def get_literal(x, vars):
+    if is_not(x):
+        return -get_pos(x.children()[0], vars)
+    else:
+        return get_pos(x, vars)
+
+def get_pos(x, vars):
+    kx = str(x)
+    if kx not in vars:
+        vars[kx] = x
+    return list(vars.values()).index(x)+1
 
 class Node:
     def __init__(self, label, probability):
@@ -71,17 +100,17 @@ class TMS:
     
     def maxsat(self):
         vars = self._create_vars()
-        s = Optimize()
+        s = WCNF()
         self._add_constraints(s, vars)
-        assert s.check() == sat
-        model = s.model()
-        return self._model_by_label(model, vars)
+        with RC2(s) as rc2:
+            for model in rc2.enumerate():
+                return self._model_by_label(model)
 
-    def _model_by_label(self, model, vars):
+    def _model_by_label(self, model):
         m = {}
-        for (x,node) in self.nodes.items():
+        for ((x,node),v) in zip(self.nodes.items(), model):
             assert node.label not in m
-            m[node.label] = model[vars[x]]
+            m[node.label] = v > 0
         return m
 
     def _create_vars(self):
@@ -93,9 +122,13 @@ class TMS:
     def _add_constraints(self, s, vars):
         def to_vars(xs):
             return [vars[x] for x in xs]
+        def add_clause(formula, weight=None):
+            cnf = convert_to_cnf(formula, vars)
+            for c in cnf:
+                s.append(c, weight)
         def add_soft(x, p):
-            s.add_soft(Not(x), exp(-p))
-            s.add_soft(x, exp(-(1-p)))
+            add_clause(Not(x), exp(-p))
+            add_clause(x, exp(-(1-p)))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 add_soft(vars[x], node.probability)
@@ -104,7 +137,7 @@ class TMS:
             if constraint.probability is not None:
                 add_soft(prop, constraint.probability)
             else:
-                s.add(prop)
+                add_clause(prop)
 
 def ex1():
     tms = TMS()

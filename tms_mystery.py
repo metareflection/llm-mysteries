@@ -1,5 +1,7 @@
 from tms_rc2 import TMS_RC2 as TMS
 from tms_rc2 import Xors
+#from tms_z3 import TMS_Z3 as TMS
+#from tms_z3 import Xors
 from z3 import *
 
 from mystery import story, parse

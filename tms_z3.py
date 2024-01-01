@@ -1,6 +1,9 @@
 from tms import TMS_Base
 from z3 import *
 
+def Xors(*xs):
+    return Sum([If(x, 1, 0) for x in xs]) == 1
+
 class TMS_Z3(TMS_Base):
     def __init__(self):
         super().__init__()

@@ -104,7 +104,7 @@ def parse(line):
     id = m['id']
     what = m['what']
     val = True if m['neg'] is None else False
-    confidence = len(m['bangs'])*0.2
+    confidence = len(m['bangs'])*0.1 + 0.5
     return (id, what, val, confidence)
 
 def solve(story_lines):

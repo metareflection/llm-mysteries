@@ -29,7 +29,7 @@ class TMS:
     def node_by_label(self, label):
         if label in self.nodes:
             return label
-        return self.create_node(label, probability=0.0)
+        return self.create_node(label)
 
     def create_node(self, label, probability=None):
         if label in self.nodes:

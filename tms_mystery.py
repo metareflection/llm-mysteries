@@ -3,8 +3,8 @@ from z3 import *
 
 from mystery import story, parse
 
-def label(id, what, val):
-    return f"{id}-{what}-{val}"
+def label(id, what):
+    return f"{id}-{what}"
 
 def solve(story_lines):
     tms = TMS()
@@ -12,7 +12,8 @@ def solve(story_lines):
     story_suspects = []
     for line in story_lines:
         (id, what, val, confidence) = line
-        tms.create_node(label(id, what, val), probability=confidence)
+        probability = confidence if val else 1.0-confidence
+        tms.create_node(label(id, what), probability=probability)
         if what not in whats:
             whats.append(what)
         if id not in story_suspects:
@@ -23,14 +24,7 @@ def solve(story_lines):
         lambda xs: Sum([If(x, 1, 0) for x in xs]) == 1,
         suspect_nodes)
     for (id,x) in zip(story_suspects, suspect_nodes):
-        for what in whats:
-            tms.add_constraint(
-                f"xor {id}-{what}",
-                lambda xs: Xor(xs[0],xs[1]),
-                [tms.node_by_label(label(id, what, True)),
-                 tms.node_by_label(label(id, what, False))])
-        all_whats = [tms.node_by_label(label(id, what, True))
-                     for what in whats]
+        all_whats = [tms.node_by_label(label(id, what)) for what in whats]
         tms.add_constraint(
             f"all whats implies guilty for {id}",
             lambda xs: Implies(And(*xs[1:]), xs[0]),

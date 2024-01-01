@@ -112,6 +112,7 @@ class TMS:
                     rs.append(self._model_by_label(model))
                 else:
                     return rs
+            return rs
 
     def maxsat(self):
         return self.maxsats()[0]

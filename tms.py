@@ -31,6 +31,9 @@ class TMS_Base:
             return label
         return self.create_node(label)
 
+    def node_prob(self, label):
+        return self.nodes[label].probability
+
     def create_node(self, label, probability=None):
         if label in self.nodes:
             old = self.nodes[label]

@@ -3,6 +3,7 @@ from tms_rc2 import Xors
 #from tms_z3 import TMS_Z3 as TMS
 #from tms_z3 import Xors
 from z3 import *
+from math import prod
 
 from mystery import story, parse
 
@@ -28,6 +29,11 @@ def solve_all(story_lines):
         suspect_nodes)
     for (id,x) in zip(story_suspects, suspect_nodes):
         all_whats = [tms.node_by_label(label(id, what)) for what in whats]
+        tms.add_constraint(
+            f"soft constraint for guilty {id}",
+            lambda xs: And(*xs),
+            all_whats,
+            probability=prod([tms.node_prob(x) for x in all_whats]))
         tms.add_constraint(
             f"all whats implies guilty for {id}",
             lambda xs: Implies(And(*xs[1:]), xs[0]),

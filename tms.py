@@ -91,11 +91,11 @@ class TMS:
         return vars
 
     def _add_constraints(self, s, vars):
-        vs = []
         def to_vars(xs):
             return [vars[x] for x in xs]
         def add_soft(x, p):
-            vs.append(If(x, exp(-p), exp(-(1-p))))
+            s.add_soft(Not(x), exp(-p))
+            s.add_soft(x, exp(-(1-p)))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
                 add_soft(vars[x], node.probability)
@@ -105,7 +105,6 @@ class TMS:
                 add_soft(prop, constraint.probability)
             else:
                 s.add(prop)
-        s.minimize(Sum(vs))
 
 def ex1():
     tms = TMS()

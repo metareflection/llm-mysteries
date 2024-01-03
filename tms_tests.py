@@ -85,6 +85,15 @@ def ex6(TMS):
     r2 = tms.maxsat()
     return (r1, r2)
 
+def ex7(TMS):
+    tms = TMS()
+    na = tms.create_node("a")
+    tms.add_constraint("a yes", lambda xs: xs[0], [na])
+    tms.add_constraint("a no", lambda xs: Not(xs[0]), [na])
+    r = tms.maxsat()
+    assert r is None # unsatisfiable
+    return r
+
 def all_exs(TMS):
     print(ex1(TMS))
     print(ex2(TMS))
@@ -92,6 +101,7 @@ def all_exs(TMS):
     print(ex4(TMS))
     print(ex5(TMS))
     print(ex6(TMS))
+    print(ex7(TMS))
 
 if __name__ == '__main__':
     all_exs(TMS_Z3)

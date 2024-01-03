@@ -79,7 +79,8 @@ class TMS_Base:
         return self._find_models(s, vars)
 
     def maxsat(self):
-        return self.maxsats()[0]
+        rs = self.maxsats()
+        return rs[0] if rs != [] else None
 
     def _create_vars(self):
         vars = {}

@@ -12,10 +12,14 @@ class TMS_Z3(TMS_Base):
         return Optimize()
 
     def _find_models(self, s, vars):
-        assert s.check() == sat
-        model = s.model()
-        # TODO: find _all_ models with best cost
-        return [self._model_by_label(model, vars)]
+        r = s.check()
+        if r == sat:
+            model = s.model()
+            # TODO: find _all_ models with best cost
+            return [self._model_by_label(model, vars)]
+        else:
+            assert r == unsat or r == unknown
+            return []
 
     def _model_by_label(self, model, vars):
         m = {}

@@ -2,30 +2,30 @@ from math import exp
 import re
 from z3 import *
 
-whats = ['mean', 'motive', 'opportunity']
+whats = ['means', 'motive', 'opportunity']
 
 story = """
-Fiona Duncan has mean: she has her purse nearby!.
+Fiona Duncan has means: she has her purse nearby!.
 Fiona Duncan has opportunity: she goes to the bathroom!!.
 Fiona Duncan has no motive: apparently.
-Colonel Barrow has mean: he has big pockets!!.
-Colonel Barrow has no mean: his coat is aside!!!.
+Colonel Barrow has means: he has big pockets!!.
+Colonel Barrow has no means: his coat is aside!!!.
 Colonel Barrow has opportunity: he goes to the bathroom!!.
 Colonel Barrow has no motive: he is a good fellow!!!.
-Abby Grant has no mean: she wears a sleeveless dress!!!.
+Abby Grant has no means: she wears a sleeveless dress!!!.
 Abby Grant has opportunity: she is briefly absent!.
 Abby Grant has motive: she likes necklaces as she wore won almost identical to the stolen one!!.
-Harold Duncan has no mean: he didn't move!!!!!.
+Harold Duncan has no means: he didn't move!!!!!.
 Harold Duncan has no opportunity: he didn't move!!!!!.
 Harold Duncan has no motive: he is a good fellow!.
-Maurice Eades has mean: he is a servant.
+Maurice Eades has means: he is a servant.
 Maurice Eades has opportunity: he is a servant.
 Maurice Eades has no motive: he is trusted!!!!!.
 """.strip()
 
 story_suspects = ['Fiona Duncan', 'Colonel Barrow', 'Abby Grant', 'Harold Duncan', 'Maurice Eades']
 
-re_line = re.compile(r'(?P<id>\w+( \w+)?) has ((?P<neg>no) )?(?P<what>mean|opportunity|motive): (.*?)(?P<bangs>!*).')
+re_line = re.compile(r'(?P<id>\w+( \w+)?) has ((?P<neg>no) )?(?P<what>means|opportunity|motive): (.*?)(?P<bangs>!*).')
 
 def get_init(d, key):
     if key not in d:

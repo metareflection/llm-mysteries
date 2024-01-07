@@ -22,7 +22,7 @@ belief_generator = make_greedy_tracker(
     mask_token_ids
 )
 
-postfix = ': Answer exactly one of: True or False.'
+postfix = '? Answer exactly one of: True or False.'
 def belief_probability(prompt):
     question = prompt[0:prompt.index(postfix)]
     instr_prompt = f'<s>[INST]{prompt}[/INST] '
@@ -39,7 +39,7 @@ def create_prompt(story, id, neg, what=None):
     if what is None:
         prompt = f"{id} is{' not' if neg else ''} guilty"
     else:
-        prompt = f"{id} has{' no' if neg else ''} {what}"
+        prompt = f"{id} has{' no' if neg else ''} {what} to be the culprit"
     question = prompt + postfix
     return question + '\n' + story + '\n' + question
 

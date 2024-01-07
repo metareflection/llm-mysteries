@@ -2,22 +2,22 @@
 
 story2 = """
 Ed Puckett has opportunity: he was in the dressing room!.
-Ed Puckett has no mean: no mention of carrying anything that could be a weapon!!!.
+Ed Puckett has no means: no mention of carrying anything that could be a weapon!!!.
 Ed Puckett has no motive: no known connection to the victim or criminal background!!!.
 Louis Murphy has no opportunity: he is the victim!!!!.
-Louis Murphy has no mean: he is the victim!!!!.
+Louis Murphy has no means: he is the victim!!!!.
 Louis Murphy has motive: known as a career mobster!!.
 Gene Roberts has opportunity: he was browsing the men's area!!.
-Gene Roberts has no mean: no mention of carrying anything that could be a weapon!!!.
+Gene Roberts has no means: no mention of carrying anything that could be a weapon!!!.
 Gene Roberts has no motive: no known connection to the victim or criminal background!!!.
 Justin Tanner has opportunity: he was in the fitting room with a sweater!!.
-Justin Tanner has mean: could have concealed a weapon under the sweater!.
+Justin Tanner has means: could have concealed a weapon under the sweater!.
 Justin Tanner has no motive: no known connection to the victim or criminal background!!!.
 George Whitley has opportunity: he was in the shoe department and came to the cashier!.
-George Whitley has no mean: only mentioned placing a catalog order!!!.
+George Whitley has no means: only mentioned placing a catalog order!!!.
 George Whitley has no motive: no known connection to the victim or criminal background!!!.
 Ronald Clay has no opportunity: he arrived after the murder!!!!.
-Ronald Clay has no mean: he is a store security officer!!!!.
+Ronald Clay has no means: he is a store security officer!!!!.
 Ronald Clay has no motive: former law enforcement, unlikely to commit a crime!!!.""".strip()
 
 story_suspects2 = ['Ed Puckett', 'Gene Roberts', 'Justin Tanner', 'George Whitley', 'Ronald Clay']
@@ -25,16 +25,16 @@ story_suspects2 = ['Ed Puckett', 'Gene Roberts', 'Justin Tanner', 'George Whitle
 story3 = """
 Danny has opportunity: he was busy playing ping-pong but could have taken a break!.
 Danny has motive: as a teenager, he might be interested in Aly!.
-Danny has mean: no specific indication against planning a kiss with Aly!.
+Danny has means: no specific indication against planning a kiss with Aly!.
 Jeremy has no opportunity: his face covered in chocolate indicates he was eating at midnight!!!!.
 Jeremy has motive: as a teenager, he might be interested in Aly!.
-Jeremy has no mean: being busy with cookies at midnight, unlikely to have kissed Aly!!!!.
+Jeremy has no means: being busy with cookies at midnight, unlikely to have kissed Aly!!!!.
 Reese has opportunity: he was playing pool but could have taken a break!.
 Reese has motive: as a teenager, he might be interested in Aly!.
-Reese has mean: no specific indication against planning a kiss with Aly!.
+Reese has means: no specific indication against planning a kiss with Aly!.
 RJ has opportunity: he was in the playroom, but his exact movements are unclear!!!
 RJ has motive: as a teenager, he might be interested in Aly!.
-RJ has mean: no specific indication against planning a kiss with Aly!.
+RJ has means: no specific indication against planning a kiss with Aly!.
 """.strip()
 
 story_suspects3 = ['Danny', 'Jeremy', 'Reese', 'RJ']

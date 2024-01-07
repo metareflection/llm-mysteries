@@ -12,7 +12,7 @@ bool_choices = ["No", "Yes"]
 stats = {'found_none': 0, 'found': 0, 'not_found': 0, 'within': 0, 'not_within': 0}
 
 def generate_node(s, qual, story, w=''):
-    dir = f"{qual} evidence ({w}mean, {w}motive, {w}opportunity) for {s} in the story:"
+    dir = f"{qual} evidence ({w}means, {w}motive, {w}opportunity) for {s} in the story:"
     return generate_rest(f"Find {dir}\n{story}\nNow find {dir}")
 
 def generate_nodes(ss, qual, story, w=''):

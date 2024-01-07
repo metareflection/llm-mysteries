@@ -1,7 +1,7 @@
-from tms_rc2 import TMS_RC2 as TMS
-from tms_rc2 import Xors
-#from tms_z3 import TMS_Z3 as TMS
-#from tms_z3 import Xors
+#from tms_rc2 import TMS_RC2 as TMS
+#from tms_rc2 import Xors
+from tms_z3 import TMS_Z3X as TMS
+from tms_z3 import Xors
 from z3 import *
 from math import prod
 
@@ -43,6 +43,7 @@ def solve_all(story_lines):
             lambda xs: Implies(Not(And(*xs[1:])), Not(xs[0])),
             [x] + all_whats)
     models = tms.maxsats()
+    print('Belief changes:', tms.belief_changes())
     return set([guilty_party(model, story_suspects) for model in models])
 
 def guilty_party(model, story_suspects):

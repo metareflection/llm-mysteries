@@ -65,7 +65,7 @@ class TMS_RC2(TMS_Base):
             m[node.label] = v > 0
         return m
 
-    def _add_clause(self, s, vars, formula, weight=None):
+    def _add_clause(self, id, s, vars, formula, weight=None):
         cnf = convert_to_cnf(formula, vars)
         for c in cnf:
             s.append(c, weight)

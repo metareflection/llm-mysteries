@@ -91,18 +91,18 @@ class TMS_Base:
     def _add_constraints(self, s, vars):
         def to_vars(xs):
             return [vars[x] for x in xs]
-        def add_soft(x, p):
+        def add_soft(id, x, p):
             if p > 0.5:
-                self._add_clause(s, vars, x, exp(-(1.0-p)))
+                self._add_clause(id, s, vars, x, exp(-(1.0-p)))
             else:
-                self._add_clause(s, vars, Not(x), exp(-p))
+                self._add_clause(id, s, vars, Not(x), exp(-p))
         for (x,node) in self.nodes.items():
             if node.probability is not None:
-                add_soft(vars[x], node.probability)
+                add_soft(x, vars[x], node.probability)
         for (x,constraint) in self.constraints.items():
             prop = constraint.relation(to_vars(constraint.nodes))
             if constraint.probability is not None:
-                add_soft(prop, constraint.probability)
+                add_soft(x, prop, constraint.probability)
             else:
-                self._add_clause(s, vars, prop)
+                self._add_clause(x, s, vars, prop)
 

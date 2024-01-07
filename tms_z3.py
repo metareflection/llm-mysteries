@@ -28,9 +28,30 @@ class TMS_Z3(TMS_Base):
             m[node.label] = model[vars[x]]
         return m
 
-    def _add_clause(self, s, vars, formula, weight=None):
+    def _add_clause(self, id, s, vars, formula, weight=None):
         if weight is not None:
             s.add_soft(formula, weight)
         else:
             s.add(formula)
             
+
+class TMS_Z3X(TMS_Z3):
+    def __init__(self):
+        super().__init__()
+        self.soft_clauses = {}
+        self.s = None
+
+    def _init_optimizer(self):
+        self.s = super()._init_optimizer()
+        return self.s
+
+    def _add_clause(self, id, s, vars, formula, weight=None):
+        super()._add_clause(id, s, vars, formula, weight)
+        if weight is not None:
+            self.soft_clauses[id] = formula
+
+    def belief_changes(self):
+        m = self.s.model()
+        return [id
+                for (id,clause) in self.soft_clauses.items()
+                if not m.evaluate(clause)]

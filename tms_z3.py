@@ -4,13 +4,10 @@ from z3 import *
 def Xors(*xs):
     return Sum([If(x, 1, 0) for x in xs]) == 1
 
-class TMS_Z3(TMS_Base):
+class TMS_Z3Base(TMS_Base):
     def __init__(self):
         super().__init__()
-
-    def _init_optimizer(self):
-        return Optimize()
-
+    
     def _find_models(self, s, vars):
         r = s.check()
         if r == sat:
@@ -27,6 +24,24 @@ class TMS_Z3(TMS_Base):
             assert node.label not in m
             m[node.label] = model[vars[x]]
         return m
+
+class TMS_Z3Symbolic(TMS_Z3Base):
+    def __init__(self):
+        super().__init__()
+
+    def _init_optimizer(self):
+        return Solver()
+
+    def _add_clause(self, id, s, vars, formula, weight=None):
+        assert(weight is None)
+        s.add(formula)
+    
+class TMS_Z3(TMS_Z3Base):
+    def __init__(self):
+        super().__init__()
+
+    def _init_optimizer(self):
+        return Optimize()
 
     def _add_clause(self, id, s, vars, formula, weight=None):
         if weight is not None:

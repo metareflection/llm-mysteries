@@ -1,4 +1,4 @@
-from tms_z3 import TMS_Z3
+from tms_z3 import TMS_Z3, TMS_Z3Symbolic
 from tms_rc2 import TMS_RC2
 from z3 import *
 
@@ -106,3 +106,4 @@ def all_exs(TMS):
 if __name__ == '__main__':
     all_exs(TMS_Z3)
     all_exs(TMS_RC2)
+    print(ex1(TMS_Z3Symbolic))

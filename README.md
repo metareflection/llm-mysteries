@@ -1,5 +1,13 @@
 # llm-mysteries
 
+## Benchmarks
+
+The benchmarks used are:
+- BIG-BENCH's collection of 5-minute mysteries: https://github.com/google/BIG-bench/tree/main/bigbench/benchmark_tasks/minute_mysteries_qa
+- MuSR's synthetically created mysteries ([code](https://github.com/Zayne-sprague/MuSR), [paper](https://arxiv.org/abs/2310.16049))
+
+See also [the original site to solve 5-minute mysteries as humans](https://www.5minutemystery.com/).
+
 ## Highlights
 
 ### Attempt 1

@@ -5,7 +5,8 @@ from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer
 #base_model_name = "meta-llama/Llama-2-70b-hf"
 #base_model_name = "meta-llama/Llama-2-70b-chat-hf"
 #base_model_name = "lmsys/vicuna-33b-v1.3"
-base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+#base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+base_model_name = "deepseek-ai/DeepSeek-R1"
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -39,3 +40,6 @@ def generate(eval_prompt, max_new_tokens=200):
                                             max_new_tokens=max_new_tokens)[0],
                              skip_special_tokens=True)
     return r
+
+if __name__ == __main__:
+    print(generate("What is 298396 * 7?"))

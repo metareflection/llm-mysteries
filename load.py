@@ -35,3 +35,6 @@ def generateAll(generate, extract):
     solved = len(list(1 for e in results['train']['eval'] if e==1))
     total = results.num_rows['train']
     print(f"Solved {solved} out of {total}.")
+
+def generate1(generate, extract, i=0):
+    generateCase(generate, extract, dataset['train'][i])

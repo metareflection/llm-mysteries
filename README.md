@@ -36,8 +36,19 @@ Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 - `git submodule init`
 - `git submodule update`
 
-### Python env
+### Python env (legacy)
 - `pip install git+https://github.com/huggingface/transformers.git`
 - `pip install "outlines @ git+https://github.com/outlines-dev/outlines.git@main"`
 - `pip install z3-solver`
 - `pip install python-sat`
+
+### Python env (deepseek-r1 using Ollama)
+- `pip install datasets`
+- `pip install ollama`
+- `pip install openai`
+- `pip install outlines`
+- `pip install wandb`
+- `ollama pull qwen2.5`
+- `ollama pull deepseek-r1`
+
+

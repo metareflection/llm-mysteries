@@ -1,7 +1,7 @@
 import ollama
 
 def generate(prompt):
-    r = ollama.generate(model='deepseek-r1', prompt=prompt)
+    r = ollama.generate(model='deepseek-r1', prompt=prompt, options={'temperature':0.6})
     response = r['response']
     return prompt+'\n'+response
 

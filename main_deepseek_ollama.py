@@ -1,5 +1,5 @@
 import load
-import deepseek
+import deepseek_ollama
 from extractor_ollama import extract
 import re
 

@@ -9,5 +9,4 @@ def deepseek_extract(r, choices):
     return extract(result, choices)
 
 if __name__ == '__main__':
-    #load.generate1(deepseek.generate, deepseek_extract)
-    load.generateAll(deepseek.generate, deepseek_extract)
+    load.generateAll(deepseek_ollama.generate, deepseek_extract)

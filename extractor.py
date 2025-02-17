@@ -1,6 +1,4 @@
-import outlines.text.generate.sample as sample
-import outlines.text.generate as generate
-import outlines.models as models
+import outlines
 import torch
 from transformers import BitsAndBytesConfig
 
@@ -9,7 +7,8 @@ from transformers import BitsAndBytesConfig
 #base_model_name = "meta-llama/Llama-2-13b-hf"
 #base_model_name = "meta-llama/Llama-2-13b-chat-hf"
 #base_model_name = "meta-llama/Llama-2-70b-chat-hf"
-base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+#base_model_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
+base_model_name = "Qwen/Qwen2.5-7B"
 
 #model = models.transformers(base_model_name, device="cuda")
 bnb_config = BitsAndBytesConfig(
@@ -18,7 +17,7 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_compute_dtype=torch.float16,
 )
 
-model = models.transformers(
+model = outlines.models.transformers(
     base_model_name,
     device="auto",
     model_kwargs={
@@ -45,4 +44,4 @@ def gen(prompt, choices):
     return r
 
 def gen_greedy(prompt, choices):
-    return generate.choice(model, choices, sampler=sample.greedy)(prompt)
+    return outlines.generate.choice(model, choices, sampler=outlines.samplers.greedy())(prompt)

@@ -27,8 +27,11 @@ def gen(prompt, choices):
     return r
 
 def gen_greedy(prompt, choices):
-    return outlines.generate.choice(model, choices#, sampler=greedy()
-                                    )(prompt)
+    try:
+        return outlines.generate.choice(model, choices)(prompt)
+    except:
+        print("Warning: error")
+        return choices[0]
 
 if __name__ == '__main__':
     print(gen('What is more yellow, Vanilla or Chocolate?', ['Vanilla', 'Chocolate']))

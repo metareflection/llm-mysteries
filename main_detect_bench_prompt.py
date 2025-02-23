@@ -3,6 +3,7 @@ from typing import Callable
 import ollama
 import re
 from claude import generate as claude_generate
+import tqdm
 
 # MODEL='deepseek-r1'
 # default_generate_func = lambda prompt: ollama.generate(model=MODEL, prompt=prompt, options={'temperature':0.6})['response']
@@ -136,17 +137,23 @@ def answer(story: str, elements: list[str], suspects: list[str], clues: list[str
 
 if __name__ == '__main__':
     # Try the first case in the dataset
-    for x in dataset['train']:
+    tot = 0
+    correct = 0
+    for x in tqdm.tqdm(dataset['train']):
         suss = suspects(x)
         cul = culprit(x)
         st = story_text(x)
         elements, e_thoughts = detect_element(st, suss, default_generate_func)
         clues, c_thoughts = associate_clue_between_elements(elements, suss, default_generate_func)
         inspirations, i_thoughts, contradictories, stop = answer_inspiration(st, elements, suss, clues, "", default_generate_func)
-        answer, a_thoughts, a_contradictories = answer(st, elements, suss, clues, "", i_thoughts, inspirations, contradictories, default_generate_func)
+        a, a_thoughts, a_contradictories = answer(st, elements, suss, clues, "", i_thoughts, inspirations, contradictories, default_generate_func)
         print("Buffer: \n", buffer)
-        if answer == cul:
-            print("Found the real culprit!")
+        if a == cul.strip():
+            print("Found the real culprit: ", a)
+            correct += 1
         else:
-            print(f"Found the wrong culprit: {answer}, not the real culprit: {cul}")
-        break
+            print(f"Found the wrong culprit: {a}, not the real culprit: {cul}")
+        tot += 1
+        buffer = ""
+    print(f"Found {correct} out of {tot} culprits.")
+

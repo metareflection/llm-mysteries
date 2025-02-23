@@ -31,13 +31,14 @@ def extract_all_tags(text: str, tag: str) -> list[str]:
 
 def detect_element(story_text: str, suspects: list[str], generate_func: Callable):
     prompt = "You are a detective. You are given a story and a list of suspects. You have to find all the potential elements that could be used against the suspects.\n\n"
-    "The story is: {story_text}\n\n"
+    prompt += "The story is: {story_text}\n\n"
     prompt += "The suspects are: {suspects}\n\n"
     prompt += """
     Here are the few rule you need to follow:
     1. Before detecting the elements , you need to write your thoughts about the elements in the story in <think> and </think> tags.
     2. After that, you need to write the elements in <elements> and </elements> tags.
     3. The element should be organized in a chronological order.
+    4. Do not make up any element that is not in the story.
     """
     prompt += "What are the potential element that could be used against the suspects?\n\n"
     prompt += "Answer:\n"
@@ -45,7 +46,7 @@ def detect_element(story_text: str, suspects: list[str], generate_func: Callable
     prompt = prompt.format(story_text=story_text, suspects=str(suspects))
 
     response = generate_func(prompt)
-    elements = extract_all_tags(response, 'element')
+    elements = extract_all_tags(response, 'elements')
     thoughts = extract_all_tags(response, 'think')
     return elements, thoughts
 
@@ -71,15 +72,15 @@ def associate_clue_between_elements(elements: list[str], suspects: list[str], ge
 def answer_inspiration(story: str, elements: list[str], suspects: list[str], clues: list[str], memory: str, generate_func: Callable, max_tries=3):
     prompt = "You are a detective. You have collected some element, and you have to find the clues that could be used to inspire the suspects.\n\n"
     prompt += "The story is: {story}\n\n"
-    prompt += "The element is: {elements}\n\n"
+    prompt += "The elements are: {elements}\n\n"
     prompt += "The suspects are: {suspects}\n\n"
     prompt += "The clues are: {clues}\n\n"
     if memory:
         prompt += "So far, this is what you have thought: {memory}\n\n"
     prompt += """
     Here are the few rule you need to follow:
-    1. Before answering, you need to write your thoughts about the clues in the element in <think> and </think> tags.
-    2. When you think, if you find contradictory hypothesis, you need to write them in <contradictory> and </contradictory> tags and avoid these hypothesis.
+    1. Before answering, you need to write your thoughts about the clues in the element in <think> and </think> tags. Note that the lack of incriminating evidence does not directly imply innocence.
+    2. When you think, if you find contradictory hypothesis, you need to write them in <contradictory> and </contradictory> tags and avoid these hypothesis. The contradictory hypothesis should be evidental and not just a guess. When you infer something, you have to cite the evidence from the story and element.
     3. After that, you need to write inspiration (i.e., abduction) in <inspiration> and </inspiration> tags.
     4. After finishing the inspiration, if you need to think more, write <continue>. Else, write <stop>.
     """
@@ -99,11 +100,12 @@ def answer_inspiration(story: str, elements: list[str], suspects: list[str], clu
         return inspirations, thoughts, contradictories, False
 
 
-def answer(elements: list[str], suspects: list[str], clues: list[str], memory: str,
+def answer(story: str, elements: list[str], suspects: list[str], clues: list[str], memory: str,
            thoughts: list[str], inspirations: str,
            contradictories: list[str],  generate_func: Callable):
     prompt = "You are a detective. You have collected some element, and you have to find the clues that could be used to inspire the suspects.\n\n"
-    prompt += "The element is: {elements}\n\n"
+    prompt += "The story is: {story}\n\n"
+    prompt += "The elements are: {elements}\n\n"
     prompt += "The suspects are: {suspects}\n\n"
     prompt += "The clues are: {clues}\n\n"
     if memory:
@@ -117,17 +119,17 @@ def answer(elements: list[str], suspects: list[str], clues: list[str], memory: s
     prompt += """
     Here are the few rule you need to follow:
     1. Before answering, you need to write your thoughts about the clues in the element in <think> and </think> tags.
-    2. When you think, if you find contradictory hypothesis, you need to write them in <contradictory> and </contradictory> tags and avoid these hypothesis.
+    2. When you think, if you find contradictory hypothesis, you need to write them in <contradictory> and </contradictory> tags and avoid these hypothesis. The contradictory hypothesis should be evidental and not just a guess. When you infer something, you have to cite the evidence from the story and element.
     3. After that, you need to write the answer in <answer> and </answer> tags.
     4. Write the final suspect and the suspect only in the tag <answer> and </answer>.
     """
-    prompt = prompt.format(elements=elements, suspects=str(suspects), clues=str(clues), memory=memory, inspirations=inspirations, thoughts=thoughts, contradictories=contradictories)
+    prompt = prompt.format(story=story, elements=elements, suspects=str(suspects), clues=str(clues), memory=memory, inspirations=inspirations, thoughts=thoughts, contradictories=contradictories)
     response = generate_func(prompt)
     thoughts = extract_all_tags(response, 'think')
     contradictories = extract_all_tags(response, 'contradictory')
     answer = extract_all_tags(response, 'answer')
     if answer:
-        return answer[0], thoughts, contradictories
+        return answer[0].strip(), thoughts, contradictories
     else:
         return "", thoughts, contradictories
 
@@ -141,7 +143,7 @@ if __name__ == '__main__':
         elements, e_thoughts = detect_element(st, suss, default_generate_func)
         clues, c_thoughts = associate_clue_between_elements(elements, suss, default_generate_func)
         inspirations, i_thoughts, contradictories, stop = answer_inspiration(st, elements, suss, clues, "", default_generate_func)
-        answer, a_thoughts, a_contradictories = answer(elements, suss, clues, "", i_thoughts, inspirations, contradictories, default_generate_func)
+        answer, a_thoughts, a_contradictories = answer(st, elements, suss, clues, "", i_thoughts, inspirations, contradictories, default_generate_func)
         print("Buffer: \n", buffer)
         if answer == cul:
             print("Found the real culprit!")

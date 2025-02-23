@@ -24,8 +24,8 @@ def generate(prompt: str) -> str:
     # Create message and get response
     response = client.messages.create(
         model=MODEL,
-        max_tokens=1000,  # Adjust as needed
-        temperature=0.6,  # Matching Ollama temperature
+        max_tokens=1000,  
+        temperature=0.6, 
         messages=[
             {
                 "role": "user",

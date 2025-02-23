@@ -2,9 +2,10 @@ from load import dataset, suspects, culprit, tagline, story_text
 from typing import Callable
 import ollama
 import re
+from claude import generate as default_generate_func
 
-MODEL='deepseek-r1'
-default_generate_func = lambda prompt: ollama.generate(model=MODEL, prompt=prompt, options={'temperature':0.6})
+# MODEL='deepseek-r1'
+# default_generate_func = lambda prompt: ollama.generate(model=MODEL, prompt=prompt, options={'temperature':0.6})['respnose']
 
 def extract_all_tags(text: str, tag: str) -> list[str]:
     """
@@ -29,8 +30,7 @@ def detect_evidence(story_text: str, suspects: list[str], generate_func: Callabl
 
     prompt.format(story_text=story_text, suspects=str(suspects))
 
-    r = generate_func(prompt)
-    response = r['response']
+    response = generate_func(prompt)
     evidences = extract_all_tags(response, 'evidence')
     thoughts = extract_all_tags(response, 'think')
     return evidences, thoughts
@@ -48,8 +48,7 @@ def associate_clue_between_evidences(evidences: list[str], suspects: list[str], 
     """
     prompt.format(evidences=evidences, suspects=str(suspects))
 
-    r = generate_func(prompt)
-    response = r['response']
+    response = generate_func(prompt)
     thoughts = extract_all_tags(response, 'think')
     clues = extract_all_tags(response, 'clue')
     return clues, thoughts
@@ -72,8 +71,7 @@ def answer_inspiration(story: str, evidences: list[str], suspects: list[str], cl
     """
     prompt.format(story=story, evidences=str(evidences), suspects=str(suspects), clues=str(clues))
 
-    r = generate_func(prompt)
-    response = r['response']
+    response = generate_func(prompt)
     thoughts = extract_all_tags(response, 'think')
     contradictories = extract_all_tags(response, 'contradictory')
     inspirations = extract_all_tags(response, 'inspiration')

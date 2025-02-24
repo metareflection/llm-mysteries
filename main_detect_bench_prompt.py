@@ -202,4 +202,4 @@ if __name__ == '__main__':
             tot += 1
             buffer = ""
             bar.set_description(f"Found {correct} out of {tot} culprits.")
-    print(f"Found {correct} out of {tot} culprits.")
+    f.write(f"Found {correct} out of {tot} culprits.")

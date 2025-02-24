@@ -128,9 +128,9 @@ def answer(story: str, elements: list[str], suspects: list[str], clues: list[str
     response = generate_func(prompt)
     thoughts = extract_all_tags(response, 'think')
     contradictories = extract_all_tags(response, 'contradictory')
-    answer = extract_all_tags(response, 'answer')
-    if answer:
-        return answer[0].strip(), thoughts, contradictories
+    a = extract_all_tags(response, 'answer')
+    if a:
+        return a[0].strip(), thoughts, contradictories
     else:
         return "", thoughts, contradictories
 
@@ -139,21 +139,67 @@ if __name__ == '__main__':
     # Try the first case in the dataset
     tot = 0
     correct = 0
-    for x in tqdm.tqdm(dataset['train']):
-        suss = suspects(x)
-        cul = culprit(x)
-        st = story_text(x)
-        elements, e_thoughts = detect_element(st, suss, default_generate_func)
-        clues, c_thoughts = associate_clue_between_elements(elements, suss, default_generate_func)
-        inspirations, i_thoughts, contradictories, stop = answer_inspiration(st, elements, suss, clues, "", default_generate_func)
-        a, a_thoughts, a_contradictories = answer(st, elements, suss, clues, "", i_thoughts, inspirations, contradictories, default_generate_func)
-        print("Buffer: \n", buffer)
-        if a == cul.strip():
-            print("Found the real culprit: ", a)
+    buffer_fp = "log/claude_35_detect_bench.md"
+    content = ""
+    with open(buffer_fp, 'r') as f:
+        content = f.read()
+    # Find tot and correct
+    new_content = ''
+    for line in content.split("\n"):
+        if "Found the real culprit" in line:
             correct += 1
+            tot += 1
+            bpos = new_content.rfind("<answer>")
+            subcontent = new_content[bpos:]
+            a = extract_all_tags(subcontent, 'answer')
+            if a:
+                line = "Found the real culprit: " + a[0].strip()
+            new_content += line + "\n"
+        elif "Found the wrong culprit" in line:
+            real_culprit = line.split(":")[-1].strip().lower()
+            wrong_culprit = line.split(":")[1].split(",")[0].strip().lower()
+            if real_culprit.find(wrong_culprit) != -1 or wrong_culprit.find(real_culprit) != -1:
+                correct += 1
+                line = "Found the real culprit: " + wrong_culprit
+            new_content += line + "\n"
+            tot += 1
         else:
-            print(f"Found the wrong culprit: {a}, not the real culprit: {cul}")
-        tot += 1
-        buffer = ""
+            new_content += line + "\n"
+    content = new_content
+    with open(buffer_fp, 'w') as f:
+        f.write(content)
+    # If there is no "Found the... from the last "Buffer:" then calculate it
+    last_buffer = content.split("Buffer:")[-1]
+    if "Found the real culprit" not in last_buffer and "Found the wrong culprit" not in last_buffer:
+        a = extract_all_tags(last_buffer, 'answer')
+        if a:
+            x = dataset['train'][tot]
+            cul = culprit(x)
+            if a and a[0].strip() == cul.strip():
+                correct += 1
+            else:
+                print(f"Found the wrong culprit: {answer}, not the real culprit: {cul}")
+            tot += 1
     print(f"Found {correct} out of {tot} culprits.")
-
+    with open(buffer_fp, 'a') as f:
+        bar = tqdm.tqdm(enumerate(dataset['train']), total=len(dataset['train']))
+        for i, x in bar:
+            if i <= tot:
+                continue
+            suss = suspects(x)
+            cul = culprit(x)
+            st = story_text(x)
+            elements, e_thoughts = detect_element(st, suss, default_generate_func)
+            clues, c_thoughts = associate_clue_between_elements(elements, suss, default_generate_func)
+            inspirations, i_thoughts, contradictories, stop = answer_inspiration(st, elements, suss, clues, "", default_generate_func)
+            a, a_thoughts, a_contradictories = answer(st, elements, suss, clues, "", i_thoughts, inspirations, contradictories, default_generate_func)
+            f.write(f"\nBuffer: \n{buffer}\n")
+            if a == cul.strip():
+                f.write(f"Found the real culprit: {a}")
+                correct += 1
+            else:
+                f.write(f"Found the wrong culprit: {a}, not the real culprit: {cul}")
+            tot += 1
+            buffer = ""
+            bar.set_description(f"Found {correct} out of {tot} culprits.")
+    print(f"Found {correct} out of {tot} culprits.")

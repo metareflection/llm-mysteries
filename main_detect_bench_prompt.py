@@ -1,12 +1,9 @@
 from load import dataset, suspects, culprit, tagline, story_text
 from typing import Callable
-import ollama
 import re
 from claude import generate as claude_generate
 import tqdm
 
-# MODEL='deepseek-r1'
-# default_generate_func = lambda prompt: ollama.generate(model=MODEL, prompt=prompt, options={'temperature':0.6})['response']
 buffer = ""
 
 def log_wrapper(func: Callable=claude_generate):

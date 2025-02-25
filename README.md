@@ -21,6 +21,13 @@ Inspired by [_LMs for Rationality_](https://arxiv.org/abs/2305.14250),
 - [mystery](mystery.py) transforms a belief graph into a MaxSAT problem to be optimized for debugging consistency;
 - [belief_graph](belief_graph.py) elicits a belief graph for a story.
 
+
+### Attempt 4
+Inpsired by [_DetectBench_](https://arxiv.org/abs/2406.12641):
+- [main_detect_bench_prompt](main_detect_bench_prompt.py) uses DetectBench's multi-chain of thought prompts.
+- [claude_35_detect_bench.md](log/claude_35_detect_bench.md) logs the run result.
+
+
 ## Libraries
 
 ### Truth-Maintenance System

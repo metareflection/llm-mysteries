@@ -4,6 +4,3 @@
 [submodule "MuSR"]
 	path = MuSR
 	url = https://github.com/Zayne-sprague/MuSR.git
-[submodule "DetectBench"]
-	path = DetectBench
-	url = https://github.com/MikeGu721/DetectBench
